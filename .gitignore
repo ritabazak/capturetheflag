@@ -1,0 +1,11 @@
+.idea
+cmake-build-debug
+CMakeLists.txt
+
+Bin
+bin
+Debug
+debug
+
+*.vcxproj
+*.sln
