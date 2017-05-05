@@ -3,12 +3,6 @@
 CTFManager::CTFManager(const ProgramArgs &args)
         : _args(args), _playerA("A"), _playerB("B") {
 
-    _getch();
-    for (auto s : listDirectory(_args.path(), ".gboard")){
-        cout << s << endl;
-    }
-    _getch();
-
     if (boardFromFile()) {
         _boardFiles = listDirectory(_args.path(), "gboard");
         //TODO: Handle scenario where _boardFiles is empty

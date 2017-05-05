@@ -6,6 +6,12 @@ Bin
 bin
 Debug
 debug
+.vs
+CaptureTheFlag
+
+*.gboard
+*.a-moves_small
+*.b-moves_small
 
 *.vcxproj
 *.sln
