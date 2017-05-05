@@ -4,7 +4,9 @@ CTFManager::CTFManager(const ProgramArgs &args)
         : _args(args), _playerA("A"), _playerB("B") {
 
     if (boardFromFile()) {
-        _boardFiles = listDirectory(_args.path(), "gboard");
+		cout << _args.path() << endl;
+		getchar();
+        _boardFiles = listDirectory(_args.path(), ".gboard");
         //TODO: Handle scenario where _boardFiles is empty
     }
 }
@@ -86,9 +88,6 @@ CTFManager::Result CTFManager::startGame(bool swapped) {
             }
             else if (boardFromFile()) {
                 gameResult = InteractiveGame(leftPlayer, rightPlayer, file).run();
-            }
-            else if (movesFromFile()) {
-                gameResult = AutomaticGame(leftPlayer, rightPlayer, _round).run();
             }
             else {
                 gameResult = InteractiveGame(leftPlayer, rightPlayer).run();

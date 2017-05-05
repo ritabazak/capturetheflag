@@ -73,7 +73,7 @@ bool BaseGame::checkVictory(const Pawn &pw) {
     return false;
 }
 
-void BaseGame::movePawn(Pawn &pawn, int player, Direction dir) {
+void BaseGame::movePawn(Pawn &pawn, int player, Direction &dir) {
     if (pawn.isAlive()) {
         Board::Type nextCellType = _board.getCellType(pawn.getPosition().getNext(dir));
 
@@ -87,7 +87,13 @@ void BaseGame::movePawn(Pawn &pawn, int player, Direction dir) {
                 Pawn::duel(pawn, enemy, _board.getCellColor(nextCellType));
             }
         }
+		else {
+			dir = Direction::STOPPED;
+		}
     }
+	else {
+		dir = Direction::STOPPED;
+	}
 }
 
 void BaseGame::draw() const {

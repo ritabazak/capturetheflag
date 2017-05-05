@@ -46,7 +46,6 @@ public:
     using BaseGame::BaseGame;
 
     AutomaticGame(Player &playerA, Player &playerB, const string &filename);
-    AutomaticGame(Player &playerA, Player &playerB, int round);
 
     Result run();
 };

@@ -12,23 +12,13 @@ AutomaticGame::AutomaticGame(Player &playerA, Player &playerB, const string &fil
     _bMoves = readMoves(bMovesFilename);
 }
 
-AutomaticGame::AutomaticGame(Player &playerA, Player &playerB, int round)
-        : BaseGame(playerA, playerB) {
-
-    string aMovesFilename = "random_" + to_string(round) + ".moves-a_small";
-    string bMovesFilename = "random_" + to_string(round) + ".moves-b_small";
-
-    _aMoves = readMoves(aMovesFilename);
-    _bMoves = readMoves(bMovesFilename);
-}
-
 list<AutomaticGame::Move> AutomaticGame::readMoves(string filename) {
     list<Move> moves;
     ifstream file(filename);
 
     string line = readLine(file);
 
-    while (!file.eof()) {
+    while (file.is_open() && !file.eof()) {
         moves.push_back(Move(line));
         line = readLine(file);
     }
@@ -68,9 +58,9 @@ bool AutomaticGame::handleTurn() {
 }
 
 BaseGame::Result AutomaticGame::run() {
-    draw();
+	draw();
 
-    while (_aMoves.size() || _bMoves.size()) {
+	while (_aMoves.size() || _bMoves.size()|| _aMove.dir != Direction::STOPPED || _bMove.dir != Direction::STOPPED) {
         if (handleTurn()) {
             displayMessage("GAME OVER", 5);
             return Result::GAME_FINISHED;
