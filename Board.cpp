@@ -1,4 +1,4 @@
-#include "Board.h"
+﻿#include "Board.h"
 
 Board::Board(ProgramArgs::BoardSource source) {
     if (source == ProgramArgs::BoardSource::RANDOM) {
@@ -27,29 +27,29 @@ Point Board::getRandomEmptyPoint() const {
 void Board::draw() const {
     gotoxy(SCREEN_START, BOARD_OFFSET);
 
-    cout << '\xC9';
+    cout << (char)(char)BoxCharacters::CORNER_TL;
     for (int col = 1; col < BOARD_SIZE * (CELL_SIZE +1); col++) {
-        cout << ((col % 4)? '\xCD' : '\xD1');
+        cout << ((col % 4)? (char)BoxCharacters::HORIZONTAL : (char)BoxCharacters::HORIZONTAL_DOWN);
     }
-    cout << '\xBB' << endl;
+    cout << (char)BoxCharacters::CORNER_TR << endl;
 
     for (int row = 0; row < BOARD_SIZE; row++) {
-        cout << '\xBA';
+        cout << (char)BoxCharacters::VERTICAL;
         for (int col = 0; col < BOARD_SIZE - 1; col++) {
-            cout << "   \xB3";
+            cout << "   " << (char)BoxCharacters::VERTICAL_THIN;
         }
-        cout << "   \xBA" << endl;
+        cout << "   " << (char)BoxCharacters::VERTICAL << endl;
 
-        cout << ((row == BOARD_SIZE - 1)? '\xC8' : '\xC7');
+        cout << ((row == BOARD_SIZE - 1)? (char)BoxCharacters::CORNER_BL : (char)BoxCharacters::VERTICAL_RIGHT);
         for (int col = 1; col < BOARD_SIZE * (CELL_SIZE + 1); col++) {
             if (row == BOARD_SIZE - 1) {
-                cout << ((col % 4) ? '\xCD' : '\xCF');
+                cout << ((col % 4) ? (char)BoxCharacters::HORIZONTAL : (char)BoxCharacters::HORIZONTAL_UP);
             }
             else {
-                cout << ((col % 4) ? '\xC4' : '\xC5');
+                cout << ((col % 4) ? (char)BoxCharacters::HORIZONTAL_THIN : (char)BoxCharacters::PLUS_THIN);
             }
         }
-        cout << ((row == BOARD_SIZE - 1)? '\xBC' : '\xB6') << endl;
+        cout << ((row == BOARD_SIZE - 1)? (char)BoxCharacters::CORNER_BR : (char)BoxCharacters::VERTICAL_LEFT) << endl;
     }
 
     for (int y = 0; y < BOARD_SIZE; y++) {

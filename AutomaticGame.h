@@ -37,7 +37,7 @@ class AutomaticGame : public BaseGame {
     list<Move> _bMoves;
     Move _aMove;
     Move _bMove;
-    unsigned int _turn;
+    unsigned int _turn = 0;
 
     list<Move> readMoves(string filename);
     bool handleTurn();

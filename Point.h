@@ -7,7 +7,7 @@ class Point {
     int _x, _y;
 
 public:
-    Point(int x = -1, int y = -1): _x(x), _y(y) {}
+    Point(int x = -1, int y = -1) : _x(x), _y(y) {}
 
     static Point randomPoint(int start, int end) {
         return Point(getRandom(start, end), getRandom(start, end));

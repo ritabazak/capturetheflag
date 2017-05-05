@@ -252,5 +252,5 @@ void BaseGame::displayMessage(const string &message, int seconds) const {
 
     cout << flush;
     resetTextColor();
-    mySleep(1000* seconds);
+    Sleep(1000 * seconds);
 }

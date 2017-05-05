@@ -12,14 +12,14 @@ using namespace std;
 
 class Board {
 public:
-    enum {BOARD_SIZE=13, CELL_SIZE=3, BOARD_OFFSET=2};
-    enum class Type {EMP, SEA, FR, FLGA, FLGB, _typeCount, OUT_OF_BOUNDS};
+    enum { BOARD_SIZE = 13, CELL_SIZE = 3, BOARD_OFFSET = 2 };
+    enum class Type { EMP, SEA, FR, FLGA, FLGB, _typeCount, OUT_OF_BOUNDS };
 
 private:
     const string _typeNames[(int)Type::_typeCount] = { "   ", " ~ ", " ^ ", " F ", " F " };
-    const int _typeColors[(int)Type::_typeCount] = { BLACK, BLUE, GREEN, RED, MAGENTA };
+    const int _typeColors[(int)Type::_typeCount] = { BLACK, DARK_BLUE, DARK_GREEN, YELLOW, PURPLE };
 
-    Type _board[BOARD_SIZE][BOARD_SIZE] = { { Type::EMP } };
+    Type _board[BOARD_SIZE][BOARD_SIZE] = { {Type::EMP} };
 
     Type &getCell(const Point &p) { return _board[p.getY()][p.getX()]; }
     Type getCell(const Point &p) const { return _board[p.getY()][p.getX()]; }

@@ -15,8 +15,8 @@ InteractiveGame::Result InteractiveGame::run() {
             }
 
             while (_kbhit()) {
-                input = (char)getchar();
-                cout << "\b \b" << flush;
+                input = (char)_getch();
+                cout << "\b" << flush;
 
                 _inputA.handleKeyInput(input);
                 _inputB.handleKeyInput(input);
@@ -36,10 +36,11 @@ bool InteractiveGame::handleTurn(int player) {
 
     if (input.hasSelection()) {
         movePawn(pawns[input.getPawn()], player, input.getDirection());
+
         result = checkVictory(pawns[input.getPawn()]);
         gotoxy(SCREEN_START, Board::BOARD_OFFSET + SCREEN_HEIGHT);
     }
-    mySleep(50);
+    Sleep(50);
 
     return result;
 }

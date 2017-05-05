@@ -12,14 +12,20 @@ class Player {
     int setScore(int score) { return _score = score; }
 
 public:
-    enum {ANY=-1, A, B};
+    enum { ANY = -1, A, B };
 
-    Player(const string name, int score = 0)
-            : _name(name), _score(score) {}
+    Player(const string name, int score = 0) {
+        setName(name);
+        setScore(score);
+    }
 
     const int getScore() const { return _score; }
+
     const string getName() const { return _name; }
+
     void setName(const string name) { _name = name; }
+
     int resetScore() { return setScore(0); }
+
     int increaseScore() { return setScore(_score + 1); }
 };

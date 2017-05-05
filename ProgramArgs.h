@@ -3,14 +3,14 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include <unistd.h>
+#include "Utils.h"
 
 using namespace std;
 
-class ProgramArgs {
+class ProgramArgs{
 public:
     enum class BoardSource { RANDOM, FILE };
-    enum class MovesSource { KEYBOARD, FILE };
+    enum class MovesSource { KEYBOARD, FILE};
 
 private:
     BoardSource _boardSource;
@@ -19,15 +19,7 @@ private:
     unsigned int _delay;
     bool _quiet;
 
-    ProgramArgs()
-            : _boardSource(BoardSource::RANDOM),
-              _movesSource(MovesSource::KEYBOARD),
-              _delay(20),
-              _quiet(false) {
-        char path[255];
-        getcwd(path, 255);
-        _path = path;
-    }
+    ProgramArgs();
 
 public:
     ProgramArgs(char *argv[], int size);

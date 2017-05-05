@@ -27,10 +27,10 @@ class CTFManager {
     void resetScore();
     Result startGame(bool swapped = false);
 
-    void printSummary();
+    void printSummary() const;
 
-    bool boardFromFile() { return _args.boardSource() == ProgramArgs::BoardSource::FILE; }
-    bool movesFromFile() { return _args.movesSource() == ProgramArgs::MovesSource::FILE; }
+    bool boardFromFile() const { return _args.boardSource() == ProgramArgs::BoardSource::FILE; }
+    bool movesFromFile() const { return _args.movesSource() == ProgramArgs::MovesSource::FILE; }
 
 public:
     CTFManager(const ProgramArgs &args);

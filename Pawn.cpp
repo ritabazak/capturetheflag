@@ -5,9 +5,7 @@ void Pawn::draw(int backColor) const {
            _pos.getY() * 2 + Board::BOARD_OFFSET + 1);
 
     setTextColor(_color, backColor);
-
     cout << " " << _key << " " << flush;
-
     resetTextColor();
 }
 
@@ -37,7 +35,7 @@ void Pawn::duel(Pawn &a, Pawn &b, int backColor) {
 
     if (winner == Player::A) {
         a.draw(backColor);
-        b._alive  = false;
+        b._alive = false;
     }
     else {
         b.draw(backColor);

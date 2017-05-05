@@ -1,5 +1,12 @@
 #include "ProgramArgs.h"
 
+ProgramArgs::ProgramArgs()
+        : _boardSource(BoardSource::RANDOM),
+          _movesSource(MovesSource::KEYBOARD),
+          _delay(20),
+          _quiet(false),
+          _path(getCurrentWorkingDirectory()) { }
+
 ProgramArgs::ProgramArgs(char **argv, int size) : ProgramArgs() {
     vector<string> args;
 

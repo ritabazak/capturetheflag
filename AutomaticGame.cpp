@@ -50,19 +50,19 @@ bool AutomaticGame::handleTurn() {
             result = checkVictory(_aPawns[_aMove.pawn - '1']);
         }
     }
+
     else {
         if (_bMoves.size() && _turn == _bMoves.front().turn) {
             _bMove = _bMoves.front();
             _bMoves.pop_front();
         }
-
         if (_bMove.dir != Direction::STOPPED) {
             movePawn(_bPawns[_bMove.pawn - '7'], Player::B, _bMove.dir);
             result = checkVictory(_bPawns[_bMove.pawn - '7']);
         }
     }
 
-    mySleep(500);
+    Sleep(200);
     ++_turn;
     return result;
 }

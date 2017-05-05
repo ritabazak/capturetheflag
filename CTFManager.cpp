@@ -3,6 +3,12 @@
 CTFManager::CTFManager(const ProgramArgs &args)
         : _args(args), _playerA("A"), _playerB("B") {
 
+    _getch();
+    for (auto s : listDirectory(_args.path(), ".gboard")){
+        cout << s << endl;
+    }
+    _getch();
+
     if (boardFromFile()) {
         _boardFiles = listDirectory(_args.path(), "gboard");
         //TODO: Handle scenario where _boardFiles is empty
@@ -20,9 +26,9 @@ void CTFManager::setNames() {
     cin >> tempName;
     _playerB.setName(tempName);
 
-    cout<< "Names were set." << endl;
+    cout << "Names were set." << endl;
 
-    mySleep(2000);
+    Sleep(2000);
 }
 
 void CTFManager::resetScore() {
@@ -31,7 +37,7 @@ void CTFManager::resetScore() {
 
     cout << "Scores were reset." << endl;
 
-    mySleep(2000);
+    Sleep(2000);
 }
 
 CTFManager::Result CTFManager::mainMenu() {
@@ -106,22 +112,20 @@ CTFManager::Result CTFManager::startGame(bool swapped) {
 }
 
 void CTFManager::run() {
-    // setWindowSize(SCREEN_WIDTH, Board::BOARD_OFFSET + SCREEN_HEIGHT + 1);
+    setWindowSize(SCREEN_WIDTH, Board::BOARD_OFFSET + SCREEN_HEIGHT + 1);
     Result result;
-
     do {
         result = mainMenu();
     } while (result == Result::SHOW_MENU);
-
     printSummary();
 }
 
-void CTFManager::printSummary() {
+void CTFManager::printSummary() const {
     clearScreen();
 
     cout << "Game Summary" << endl;
     cout << _playerA.getName() << " points: " << _playerA.getScore() << endl;
     cout << _playerB.getName() << " points: " << _playerB.getScore() << endl;
 
-    system("read"); // system("pause");
+    system("pause"); // system("read");
 }
