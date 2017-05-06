@@ -44,7 +44,7 @@ bool InteractiveGame::handleTurn() {
             Move &lastMove = (player == Player::A)? _aLastMove : _bLastMove;
             Move newMove(_turn, input);
 
-            if (lastMove != newMove) {
+            if (lastMove != newMove && lastMove.dir != Direction::STOPPED) {
                 ofstream &movesFile = (player == Player::A)? _aRecord : _bRecord;
                 lastMove = newMove;
                 lastMove.writeToFile(movesFile);
