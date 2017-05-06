@@ -1,8 +1,12 @@
 #include "BaseGame.h"
 
-BaseGame::BaseGame(Player &playerA, Player &playerB, const string &filename)
+BaseGame::BaseGame(Player &playerA,
+                   Player &playerB,
+                   unsigned int delay,
+                   const string &filename)
         : _playerA(playerA),
           _playerB(playerB),
+          _delay(delay),
           _board(ProgramArgs::BoardSource::FILE) {
     list<pair<Point, Board::Type>> boardList;
     list<pair<Point, char>> pawnList;
@@ -78,22 +82,29 @@ void BaseGame::movePawn(Pawn &pawn, int player, Direction &dir) {
         Board::Type nextCellType = _board.getCellType(pawn.getPosition().getNext(dir));
 
         if (pawn.canMove(nextCellType) && !hasPawn(pawn.getPosition().getNext(dir), player)) {
-            _board.drawCell(pawn.getPosition());
-            pawn.move(dir, _board.getCellColor(nextCellType));
+            if (!_quiet) { _board.drawCell(pawn.getPosition()); }
+
+            pawn.move(dir);
+
+            if (!_quiet) { pawn.draw(_board.getCellColor(nextCellType)); }
 
             if (hasPawn(pawn.getPosition(), (player + 1) % 2)) { // Check for opposite player pawns
                 Pawn &enemy = getPawn(pawn.getPosition(), (player + 1) % 2);
 
-                Pawn::duel(pawn, enemy, _board.getCellColor(nextCellType));
+                Pawn::duel(pawn, enemy);
+
+                if (!_quiet && enemy.isAlive()) {
+                    enemy.draw(_board.getCellColor(nextCellType));
+                }
             }
         }
-		else {
-			dir = Direction::STOPPED;
-		}
+        else {
+            dir = Direction::STOPPED;
+        }
     }
-	else {
-		dir = Direction::STOPPED;
-	}
+    else {
+        dir = Direction::STOPPED;
+    }
 }
 
 void BaseGame::draw() const {
@@ -226,7 +237,7 @@ void BaseGame::initPawns(list<pair<Point, char>> pawnList) {
     }
 }
 
-void BaseGame::displayMessage(const string &message, int seconds) const {
+void BaseGame::displayMessage(const string &message, unsigned int delay) const {
     int len = message.length() + 6;
     int height = 5;
     int x = SCREEN_WIDTH / 2 - len / 2;
@@ -258,5 +269,5 @@ void BaseGame::displayMessage(const string &message, int seconds) const {
 
     cout << flush;
     resetTextColor();
-    Sleep(1000 * seconds);
+    Sleep(delay);
 }

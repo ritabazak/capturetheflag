@@ -10,7 +10,7 @@ InteractiveGame::Result InteractiveGame::run() {
 
         while (input != ESC) {
             if (handleTurn(Player::A) || handleTurn(Player::B)) {
-                displayMessage("GAME OVER", 5);
+                displayMessage("GAME OVER", _delay * 50);
                 return Result::GAME_FINISHED;
             }
 
@@ -40,7 +40,7 @@ bool InteractiveGame::handleTurn(int player) {
         result = checkVictory(pawns[input.getPawn()]);
         gotoxy(SCREEN_START, Board::BOARD_OFFSET + SCREEN_HEIGHT);
     }
-    Sleep(50);
+    Sleep(_delay);
 
     return result;
 }
@@ -71,5 +71,25 @@ InteractiveGame::Result InteractiveGame::gameMenu() const {
             default:
                 cout << "Please enter a valid option" << endl;
         }
+    }
+}
+
+void InteractiveGame::writeBoardToFile(const string &filename, array<array<char, Board::BOARD_SIZE>, Board::BOARD_SIZE> &boardArray) {
+    for (int i = 0; i < 3; i++) {
+        const Point &p = _aPawns[i].getPosition();
+        boardArray[p.getY()][p.getX()] = _aPawns[i].getKey();
+
+        const Point &p = _bPawns[i].getPosition();
+        boardArray[p.getY()][p.getX()] = _bPawns[i].getKey();
+    }
+
+    ofstream file(filename, ios_base::trunc);
+
+    for (int row = 0; row < Board::BOARD_SIZE; row++) {
+        for (int col = 0; col < Board::BOARD_SIZE; col++) {
+            file << boardArray[row][col];
+        }
+
+        file << endl;
     }
 }

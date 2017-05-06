@@ -45,7 +45,11 @@ class AutomaticGame : public BaseGame {
 public:
     using BaseGame::BaseGame;
 
-    AutomaticGame(Player &playerA, Player &playerB, const string &filename);
+    AutomaticGame(Player &playerA,
+                  Player &playerB,
+                  unsigned int delay,
+                  bool quiet,
+                  const string &filename);
 
     Result run();
 };

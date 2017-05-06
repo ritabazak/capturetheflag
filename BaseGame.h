@@ -10,7 +10,6 @@ public:
     enum class Result { GAME_CONTINUED, GAME_RESTARTED, GAME_FINISHED, EXIT_TO_MAIN_MENU, EXIT };
 
 private:
-    Board _board;
     Player &_playerA, &_playerB;
 
     bool hasPawn(const Point &pt, int player = Player::ANY) const;
@@ -19,21 +18,30 @@ private:
     void initPawns();
     void initPawns(list<pair<Point, char>> pawnList);
     void drawScores() const;
-    
 
 protected:
-	Pawn _aPawns[3], _bPawns[3];
+    Board _board;
+    Pawn _aPawns[3], _bPawns[3];
+    unsigned int _delay;
+    bool _quiet = false;
 
-	void draw() const;
-	void displayMessage(const string &message, int seconds) const;
-	void movePawn(Pawn &pawn, int player, Direction &dir);
-	bool checkVictory(const Pawn &pw);
+    void draw() const;
+    void displayMessage(const string &message, unsigned int seconds) const;
+    void movePawn(Pawn &pawn, int player, Direction &dir);
+    bool checkVictory(const Pawn &pw);
 
 public:
-    BaseGame(Player &playerA, Player &playerB)
-            : _playerA(playerA), _playerB(playerB) {
+    BaseGame(Player &playerA,
+             Player &playerB,
+             unsigned int delay)
+            : _playerA(playerA),
+              _playerB(playerB),
+              _delay(delay) {
         initPawns();
     }
 
-    BaseGame(Player &playerA, Player &playerB, const string &filename);
+    BaseGame(Player &playerA,
+             Player &playerB,
+             unsigned int delay,
+             const string &filename);
 };

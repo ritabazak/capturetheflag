@@ -9,3 +9,6 @@
 #include "Utils_Win.h"
 
 #endif
+
+//TODO: Move everything into a class
+//TODO: Move displayMessage into Utils

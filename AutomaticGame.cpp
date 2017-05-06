@@ -1,7 +1,12 @@
 #include "AutomaticGame.h"
 
-AutomaticGame::AutomaticGame(Player &playerA, Player &playerB, const string &filename)
-        : BaseGame(playerA, playerB, filename) {
+AutomaticGame::AutomaticGame(Player &playerA,
+                             Player &playerB,
+                             unsigned int delay,
+                             bool quiet,
+                             const string &filename)
+        : BaseGame(playerA, playerB, delay, filename) {
+    _quiet = quiet;
 
     string aMovesFilename = filename;
     aMovesFilename.replace(filename.find("gboard"), 6, "moves-a_small");
@@ -52,20 +57,24 @@ bool AutomaticGame::handleTurn() {
         }
     }
 
-    Sleep(200);
+    if (_quiet) { Sleep(_delay); }
+
     ++_turn;
     return result;
 }
 
 BaseGame::Result AutomaticGame::run() {
-	draw();
+    if (!_quiet) { draw(); }
 
-	while (_aMoves.size() || _bMoves.size()|| _aMove.dir != Direction::STOPPED || _bMove.dir != Direction::STOPPED) {
+    while (_aMoves.size() || _bMoves.size() ||
+           _aMove.dir != Direction::STOPPED ||
+           _bMove.dir != Direction::STOPPED) {
         if (handleTurn()) {
-            displayMessage("GAME OVER", 5);
-            return Result::GAME_FINISHED;
+            break;
         }
     }
+
+    if (!_quiet) { displayMessage("GAME OVER", _delay * 50); }
 
     return Result::GAME_FINISHED;
 }

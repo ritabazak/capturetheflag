@@ -9,9 +9,9 @@ void Pawn::draw(int backColor) const {
     resetTextColor();
 }
 
-void Pawn::duel(Pawn &a, Pawn &b, int backColor) {
+void Pawn::duel(Pawn &a, Pawn &b) {
     if (a.whichPlayer() == Player::B) {
-        return duel(b, a, backColor);
+        return duel(b, a);
     }
 
     int winner = Player::A;
@@ -33,12 +33,6 @@ void Pawn::duel(Pawn &a, Pawn &b, int backColor) {
         }
     }
 
-    if (winner == Player::A) {
-        a.draw(backColor);
-        b._alive = false;
-    }
-    else {
-        b.draw(backColor);
-        a._alive = false;
-    }
+    a._alive = winner == Player::A;
+    b._alive = winner == Player::B;
 }

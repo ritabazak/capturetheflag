@@ -75,3 +75,30 @@ void Board::setCells(list<pair<Point, Board::Type>> cellList) {
         getCell(p.first) = p.second;
     }
 }
+
+array<array<char, BOARD_SIZE>, BOARD_SIZE> Board::generateCharArray() {
+    array<array<char, BOARD_SIZE>, BOARD_SIZE> boardArray;
+
+    for (int row = 0; row < BOARD_SIZE; row++) {
+        for (int col = 0; col < BOARD_SIZE; col++) {
+            switch (_board[row][col]) {
+                case Type::FR:
+                    boardArray[row][col] = 'T';
+                    break;
+                case Type::SEA:
+                    boardArray[row][col] = 'S';
+                    break;
+                case Type::FLGA:
+                    boardArray[row][col] = 'A';
+                    break;
+                case Type::FLGB:
+                    boardArray[row][col] = 'B';
+                    break;
+                default:
+                    boardArray[row][col] = ' ';
+            }
+        }
+    }
+
+    return boardArray;
+}

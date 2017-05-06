@@ -33,6 +33,6 @@ public:
     }
 
     int getPawn() const { return _pawnSelect; }
-    Direction& getDirection() { return _dirSelect; }
+    Direction &getDirection() { return _dirSelect; }
     bool hasSelection() const { return _pawnSelect != -1 && _dirSelect != Direction::STOPPED; }
 };

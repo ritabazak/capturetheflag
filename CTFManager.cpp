@@ -4,10 +4,7 @@ CTFManager::CTFManager(const ProgramArgs &args)
         : _args(args), _playerA("A"), _playerB("B") {
 
     if (boardFromFile()) {
-		cout << _args.path() << endl;
-		getchar();
         _boardFiles = listDirectory(_args.path(), ".gboard");
-        //TODO: Handle scenario where _boardFiles is empty
     }
 }
 
@@ -24,7 +21,7 @@ void CTFManager::setNames() {
 
     cout << "Names were set." << endl;
 
-    Sleep(2000);
+    Sleep(_args.delay() * 50);
 }
 
 void CTFManager::resetScore() {
@@ -33,7 +30,7 @@ void CTFManager::resetScore() {
 
     cout << "Scores were reset." << endl;
 
-    Sleep(2000);
+    Sleep(_args.delay() * 50);
 }
 
 CTFManager::Result CTFManager::mainMenu() {
@@ -44,6 +41,7 @@ CTFManager::Result CTFManager::mainMenu() {
     cout << "2. Start game" << endl;
     cout << "3. Start swapped game" << endl;
     cout << "4. Reset score" << endl;
+    cout << "5. " << (_record? "Stop" : "Start") << " recording" << endl;
     cout << "9. Exit" << endl;
 
     int op;
@@ -60,6 +58,9 @@ CTFManager::Result CTFManager::mainMenu() {
                 return startGame(op == 3);
             case 4:
                 resetScore();
+                return Result::SHOW_MENU;
+            case 5:
+                _record = !_record;
                 return Result::SHOW_MENU;
             case 9:
                 return Result::EXIT;
@@ -78,19 +79,19 @@ CTFManager::Result CTFManager::startGame(bool swapped) {
 
     do {
         if (boardFromFile()) {
-            file = (string) _boardFiles.front();
+            file = (string)_boardFiles.front();
             _boardFiles.pop_front();
         }
 
         do {
-            if (boardFromFile() && movesFromFile()) {
-                gameResult = AutomaticGame(leftPlayer, rightPlayer, file).run();
+            if (movesFromFile()) {
+                gameResult = AutomaticGame(leftPlayer, rightPlayer, _args.delay(), _args.quiet(), file).run();
             }
             else if (boardFromFile()) {
-                gameResult = InteractiveGame(leftPlayer, rightPlayer, file).run();
+                gameResult = InteractiveGame(leftPlayer, rightPlayer, _args.delay(), _record, file).run();
             }
             else {
-                gameResult = InteractiveGame(leftPlayer, rightPlayer).run();
+                gameResult = InteractiveGame(leftPlayer, rightPlayer, _args.delay(), _record, _round, _args.path()).run();
             }
         } while (gameResult == BaseGame::Result::GAME_RESTARTED);
 
@@ -106,10 +107,22 @@ CTFManager::Result CTFManager::startGame(bool swapped) {
 
 void CTFManager::run() {
     setWindowSize(SCREEN_WIDTH, Board::BOARD_OFFSET + SCREEN_HEIGHT + 1);
-    Result result;
-    do {
-        result = mainMenu();
-    } while (result == Result::SHOW_MENU);
+
+    if (boardFromFile() && !_boardFiles.size()) {
+        return;
+    }
+
+    if (movesFromFile()) {
+        startGame();
+    }
+    else {
+        Result result;
+
+        do {
+            result = mainMenu();
+        } while (result == Result::SHOW_MENU);
+    }
+
     printSummary();
 }
 
@@ -119,6 +132,4 @@ void CTFManager::printSummary() const {
     cout << "Game Summary" << endl;
     cout << _playerA.getName() << " points: " << _playerA.getScore() << endl;
     cout << _playerB.getName() << " points: " << _playerB.getScore() << endl;
-
-    system("pause"); // system("read");
 }

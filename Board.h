@@ -1,9 +1,11 @@
 #pragma once
 
 #include <iostream>
+#include <array>
 #include <string>
 #include <list>
 #include <utility>
+#include <fstream>
 #include "Utils.h"
 #include "Point.h"
 #include "ProgramArgs.h"
@@ -44,4 +46,6 @@ public:
     void drawCell(const Point &p) const { drawCell(p.getX(), p.getY()); }
 
     void setCells(list <pair<Point, Type>> cellList);
+
+    array<array<char, BOARD_SIZE>, BOARD_SIZE> generateCharArray();
 };

@@ -23,12 +23,10 @@ public:
             : _key(key), _pos(pos), _color(color), _canSwim(canSwim), _canClimbTrees(canClimbTrees) {}
 
     const Point &getPosition() const { return _pos; }
+    char getKey() const { return _key; }
     void draw(int backColor) const;
     bool isAlive() const { return _alive; }
-    void move(Direction dir, int backColor) {
-        _pos = _pos.getNext(dir);
-        draw(backColor);
-    }
+    void move(Direction dir) { _pos = _pos.getNext(dir); }
     int whichPlayer() const { return (_key <= '3')? Player::A : Player::B; }
     bool canMove(Board::Type cellType) const {
         return cellType == Board::Type::EMP
@@ -37,5 +35,5 @@ public:
                || (_canSwim && cellType == Board::Type::SEA)
                || (_canClimbTrees && cellType == Board::Type::FR);
     }
-    static void duel(Pawn &a, Pawn &b, int backColor);
+    static void duel(Pawn &a, Pawn &b);
 };

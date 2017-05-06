@@ -19,6 +19,7 @@ class CTFManager {
     list<string> _boardFiles;
 
     unsigned int _round = 0;
+    bool _record = false;
     Player _playerA;
     Player _playerB;
 
