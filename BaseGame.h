@@ -24,6 +24,7 @@ protected:
     Pawn _aPawns[3], _bPawns[3];
     unsigned int _delay;
     bool _quiet = false;
+    unsigned int _turn = 0;
 
     void draw() const;
     void displayMessage(const string &message, unsigned int seconds) const;

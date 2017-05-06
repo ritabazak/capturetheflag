@@ -33,6 +33,8 @@ public:
     }
 
     int getPawn() const { return _pawnSelect; }
+    char getPawnKey() const { return _pawnKeys[_pawnSelect]; }
     Direction &getDirection() { return _dirSelect; }
+    Direction getDirection() const { return _dirSelect; }
     bool hasSelection() const { return _pawnSelect != -1 && _dirSelect != Direction::STOPPED; }
 };

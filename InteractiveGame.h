@@ -13,6 +13,7 @@
 #include "Direction.h"
 #include "Player.h"
 #include "PlayerInput.h"
+#include "Move.h"
 
 using namespace std;
 
@@ -20,14 +21,14 @@ class InteractiveGame : BaseGame {
     PlayerInput _inputA, _inputB;
     bool _record;
     ofstream _aRecord, _bRecord;
+    Move _aLastMove, _bLastMove;
 
-    bool handleTurn(int player);
+    bool handleTurn();
     Result gameMenu() const;
+    void writeBoardToFile(const string &filename);
 
 public:
     using BaseGame::BaseGame;
-
-    void writeBoardToFile(const string &filename, array<array<char, Board::BOARD_SIZE>, Board::BOARD_SIZE> &boardArray);
 
     InteractiveGame(Player &playerA, Player &playerB, unsigned int delay, bool record, int round, string path)
             : BaseGame(playerA, playerB, delay),
@@ -35,8 +36,7 @@ public:
               _inputB("imjl", "789"),
               _record(record) {
         if (_record) {
-            array<array<char, Board::BOARD_SIZE>, Board::BOARD_SIZE> boardArray = _board.generateCharArray();
-            writeBoardToFile(path + "\\random_" + to_string(round) + ".gboard", boardArray);
+            writeBoardToFile(path + "\\random_" + to_string(round) + ".gboard");
 
             _aRecord.open(path + "\\random_" + to_string(round) + ".a-moves_small", ios_base::trunc);
             _bRecord.open(path + "\\random_" + to_string(round) + ".b-moves_small", ios_base::trunc);

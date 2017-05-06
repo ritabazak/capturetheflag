@@ -17,7 +17,7 @@ AutomaticGame::AutomaticGame(Player &playerA,
     _bMoves = readMoves(bMovesFilename);
 }
 
-list<AutomaticGame::Move> AutomaticGame::readMoves(string filename) {
+list<Move> AutomaticGame::readMoves(string filename) {
     list<Move> moves;
     ifstream file(filename);
 

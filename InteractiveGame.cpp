@@ -9,7 +9,7 @@ InteractiveGame::Result InteractiveGame::run() {
         gotoxy(SCREEN_START, Board::BOARD_OFFSET + SCREEN_HEIGHT);
 
         while (input != ESC) {
-            if (handleTurn(Player::A) || handleTurn(Player::B)) {
+            if (handleTurn()) {
                 displayMessage("GAME OVER", _delay * 50);
                 return Result::GAME_FINISHED;
             }
@@ -29,17 +29,33 @@ InteractiveGame::Result InteractiveGame::run() {
     return menuResult;
 }
 
-bool InteractiveGame::handleTurn(int player) {
+bool InteractiveGame::handleTurn() {
+    int player = (_turn % 2)? Player::B : Player::A;
+
     PlayerInput &input = (player == Player::A)? _inputA : _inputB;
     Pawn *pawns = (player == Player::A)? (Pawn*)_aPawns : (Pawn*)_bPawns;
+
     bool result = false;
 
     if (input.hasSelection()) {
         movePawn(pawns[input.getPawn()], player, input.getDirection());
 
+        if (_record) {
+            Move &lastMove = (player == Player::A)? _aLastMove : _bLastMove;
+            Move newMove(_turn, input);
+
+            if (lastMove != newMove) {
+                ofstream &movesFile = (player == Player::A)? _aRecord : _bRecord;
+                lastMove = newMove;
+                lastMove.writeToFile(movesFile);
+            }
+        }
+
         result = checkVictory(pawns[input.getPawn()]);
         gotoxy(SCREEN_START, Board::BOARD_OFFSET + SCREEN_HEIGHT);
     }
+
+    ++_turn;
     Sleep(_delay);
 
     return result;
@@ -74,7 +90,9 @@ InteractiveGame::Result InteractiveGame::gameMenu() const {
     }
 }
 
-void InteractiveGame::writeBoardToFile(const string &filename, array<array<char, Board::BOARD_SIZE>, Board::BOARD_SIZE> &boardArray) {
+void InteractiveGame::writeBoardToFile(const string &filename) {
+    array<array<char, Board::BOARD_SIZE>, Board::BOARD_SIZE> boardArray = _board.generateCharArray();
+
     for (int i = 0; i < 3; i++) {
         const Point &p1 = _aPawns[i].getPosition();
         boardArray[p1.getY()][p1.getX()] = _aPawns[i].getKey();
