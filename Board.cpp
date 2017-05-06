@@ -76,11 +76,11 @@ void Board::setCells(list<pair<Point, Board::Type>> cellList) {
     }
 }
 
-array<array<char, BOARD_SIZE>, BOARD_SIZE> Board::generateCharArray() {
-    array<array<char, BOARD_SIZE>, BOARD_SIZE> boardArray;
+array<array<char, Board::BOARD_SIZE>, Board::BOARD_SIZE> Board::generateCharArray() {
+    array<array<char, Board::BOARD_SIZE>, Board::BOARD_SIZE> boardArray;
 
-    for (int row = 0; row < BOARD_SIZE; row++) {
-        for (int col = 0; col < BOARD_SIZE; col++) {
+    for (int row = 0; row < Board::BOARD_SIZE; row++) {
+        for (int col = 0; col < Board::BOARD_SIZE; col++) {
             switch (_board[row][col]) {
                 case Type::FR:
                     boardArray[row][col] = 'T';

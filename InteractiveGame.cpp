@@ -76,11 +76,11 @@ InteractiveGame::Result InteractiveGame::gameMenu() const {
 
 void InteractiveGame::writeBoardToFile(const string &filename, array<array<char, Board::BOARD_SIZE>, Board::BOARD_SIZE> &boardArray) {
     for (int i = 0; i < 3; i++) {
-        const Point &p = _aPawns[i].getPosition();
-        boardArray[p.getY()][p.getX()] = _aPawns[i].getKey();
+        const Point &p1 = _aPawns[i].getPosition();
+        boardArray[p1.getY()][p1.getX()] = _aPawns[i].getKey();
 
-        const Point &p = _bPawns[i].getPosition();
-        boardArray[p.getY()][p.getX()] = _bPawns[i].getKey();
+        const Point &p2 = _bPawns[i].getPosition();
+        boardArray[p2.getY()][p2.getX()] = _bPawns[i].getKey();
     }
 
     ofstream file(filename, ios_base::trunc);
