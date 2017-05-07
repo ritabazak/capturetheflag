@@ -237,11 +237,13 @@ bool BaseGame::errorCheck(map<char, unsigned int> charCount, const string &filen
     bool hadErrors = false;
 
     if (!(charCount['A'] == 1 && charCount['1'] == 1 && charCount['2'] == 1 && charCount['3'] == 1)) {
+        clearScreen();
         cout << "Wrong settings for player A tools in file " << filename << endl;
         hadErrors = true;
     }
 
     if (!(charCount['B'] == 1 && charCount['7'] == 1 && charCount['8'] == 1 && charCount['9'] == 1)) {
+        if (!hadErrors) { clearScreen(); }
         cout << "Wrong settings for player B tools in file " << filename << endl;
         hadErrors = true;
     }
@@ -251,6 +253,7 @@ bool BaseGame::errorCheck(map<char, unsigned int> charCount, const string &filen
     charCount.erase(' ');charCount.erase('S');charCount.erase('T');
 
     for (const auto &pair : charCount) {
+        if (!hadErrors) { clearScreen(); }
         cout << "Wrong character on board: " << pair.first << " in file " << filename << endl;
         hadErrors = true;
     }

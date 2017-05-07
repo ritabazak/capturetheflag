@@ -1,7 +1,7 @@
 #include "InteractiveGame.h"
 
 InteractiveGame::Result InteractiveGame::run() {
-    if (BaseGame::run() == Result::EXIT) { return Result::EXIT; }
+    if (BaseGame::run() == Result::EXIT_WITH_ERRORS) { return Result::EXIT_WITH_ERRORS; }
 
     Result menuResult;
 

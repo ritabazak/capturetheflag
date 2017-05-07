@@ -97,6 +97,9 @@ CTFManager::Result CTFManager::startGame(bool swapped) {
 
         ++_round;
 
+        if (gameResult == BaseGame::Result::EXIT_WITH_ERRORS) {
+            return CTFManager::Result::EXIT_WITH_ERRORS;
+        }
         if (gameResult == BaseGame::Result::EXIT || (boardFromFile() && _boardFiles.empty())) {
             return CTFManager::Result::EXIT;
         }
@@ -112,18 +115,18 @@ void CTFManager::run() {
         return;
     }
 
-    if (movesFromFile()) {
-        startGame();
-    }
-    else {
-        Result result;
+    Result result;
 
+    if (movesFromFile()) {
+        result = startGame();
+    }
+
+    else {
         do {
             result = mainMenu();
         } while (result == Result::SHOW_MENU);
     }
-
-    printSummary();
+    if (result != Result::EXIT_WITH_ERRORS) { printSummary(); };
 }
 
 void CTFManager::printSummary() const {

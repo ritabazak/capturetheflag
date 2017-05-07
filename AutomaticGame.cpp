@@ -57,14 +57,14 @@ bool AutomaticGame::handleTurn() {
         }
     }
 
-    if (_quiet) { Sleep(_delay); }
+    if (!_quiet) { Sleep(_delay); }
 
     ++_turn;
     return result;
 }
 
 BaseGame::Result AutomaticGame::run() {
-    if (BaseGame::run() == Result::EXIT) { return Result::EXIT; }
+    if (BaseGame::run() == Result::EXIT_WITH_ERRORS) { return Result::EXIT_WITH_ERRORS; }
 
     if (!_quiet) { draw(); }
 

@@ -10,7 +10,7 @@ using namespace std;
 
 class BaseGame {
 public:
-    enum class Result { GAME_CONTINUED, GAME_RESTARTED, GAME_FINISHED, EXIT_TO_MAIN_MENU, EXIT };
+    enum class Result { GAME_CONTINUED, GAME_RESTARTED, GAME_FINISHED, EXIT_TO_MAIN_MENU, EXIT, EXIT_WITH_ERRORS };
 
 private:
     Player &_playerA, &_playerB;
@@ -34,7 +34,7 @@ protected:
     void draw() const;
     void movePawn(Pawn &pawn, int player, Direction &dir);
     bool checkVictory(const Pawn &pw);
-    Result run() { return _errorFlag? Result::EXIT : Result::GAME_CONTINUED; }
+    Result run() { return _errorFlag? Result::EXIT_WITH_ERRORS : Result::GAME_CONTINUED; }
 
 public:
     BaseGame(Player &playerA,

@@ -38,8 +38,8 @@ public:
         if (_record) {
             writeBoardToFile(path + "\\random_" + to_string(round) + ".gboard");
 
-            _aRecord.open(path + "\\random_" + to_string(round) + ".a-moves_small", ios_base::trunc);
-            _bRecord.open(path + "\\random_" + to_string(round) + ".b-moves_small", ios_base::trunc);
+            _aRecord.open(path + "\\random_" + to_string(round) + ".moves-a_small", ios_base::trunc);
+            _bRecord.open(path + "\\random_" + to_string(round) + ".moves-b_small", ios_base::trunc);
         }
     }
 

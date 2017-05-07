@@ -13,7 +13,7 @@
 using namespace std;
 
 class CTFManager {
-    enum class Result { SHOW_MENU, EXIT };
+    enum class Result { SHOW_MENU, EXIT, EXIT_WITH_ERRORS};
 
     const ProgramArgs &_args;
     list<string> _boardFiles;
