@@ -85,8 +85,14 @@ string readLine(istream &in) {
 list<string> listDirectory(string path, string extension, string filename) {
     list<string> files;
 
-    if (extension == ".gboard") {
-//        files.push_back("board_1.gboard");
+    fs::directory_iterator end;
+
+    for(fs::directory_iterator iter(path); iter != end; ++iter) {
+        if (iter->status().type() == fs::file_type::regular_file) {
+            if (iter->path().extension().string() == extension) {
+                files.push_back(iter->path().string());
+            }
+        }
     }
 
     return files;

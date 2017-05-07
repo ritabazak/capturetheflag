@@ -97,13 +97,6 @@ list<string> listDirectory(string path, string extension, string filename) {
         }
     }
 
-
-
-
-    /*if (extension == "gboard") {
-        files.push_back("board_1.gboard");
-    }*/
-
     return files;
 }
 
