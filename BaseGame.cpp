@@ -13,6 +13,8 @@ BaseGame::BaseGame(Player &playerA,
 
     ifstream file(filename);
 
+    map<char, unsigned int> charCount;
+
     for (int row = 0; row < Board::BOARD_SIZE; row++) {
         string line = readLine(file);
 
@@ -20,34 +22,28 @@ BaseGame::BaseGame(Player &playerA,
 
         for (int col = 0; col < lineLength; col++) {
             switch (line[col]) {
-                case 'S':
-                    boardList.push_back(pair<Point, Board::Type>(Point(col, row), Board::Type::SEA));
-                    break;
-                case 'T':
-                    boardList.push_back(pair<Point, Board::Type>(Point(col, row), Board::Type::FR));
-                    break;
                 case ' ':
                     break;
-                case 'A':
-                    boardList.push_back(pair<Point, Board::Type>(Point(col, row), Board::Type::FLGA));
+                case 'T': case 'S':
+                    boardList.push_back(pair<Point, Board::Type>(Point(col, row),
+                                                                 (line[col] == 'T')? Board::Type::FR : Board::Type::SEA));
                     break;
-                case 'B':
-                    boardList.push_back(pair<Point, Board::Type>(Point(col, row), Board::Type::FLGB));
+                case 'A': case 'B':
+                    boardList.push_back(pair<Point, Board::Type>(Point(col, row),
+                                                                 (line[col] == 'A')? Board::Type::FLGA : Board::Type::FLGB));
                     break;
-                case '1':
-                case '2':
-                case '3':
-                case '7':
-                case '8':
-                case '9':
+                case '1': case '2': case '3': case '7': case '8': case '9':
                     pawnList.push_back(pair<Point, char>(Point(col, row), line[col]));
                     break;
                 default:
-                    //ERROR
                     break;
             }
+
+            charCount[line[col]]++;
         }
     }
+
+    _errorFlag = errorCheck(charCount, filename);
 
     _board.setCells(boardList);
     initPawns(pawnList);
@@ -237,37 +233,27 @@ void BaseGame::initPawns(list<pair<Point, char>> pawnList) {
     }
 }
 
-void BaseGame::displayMessage(const string &message, unsigned int delay) const {
-    int len = message.length() + 6;
-    int height = 5;
-    int x = SCREEN_WIDTH / 2 - len / 2;
-    int y = Board::BOARD_OFFSET + SCREEN_HEIGHT / 2 - height / 2;
+bool BaseGame::errorCheck(map<char, unsigned int> charCount, const string &filename) {
+    bool hadErrors = false;
 
-    setTextColor(BLACK, WHITE);
-    gotoxy(x, y);
-    cout << '\xC9';
-    for (int i = 1; i < len - 1; i++) { cout << '\xCD'; }
-    cout << '\xBB';
+    if (!(charCount['A'] == 1 && charCount['1'] == 1 && charCount['2'] == 1 && charCount['3'] == 1)) {
+        cout << "Wrong settings for player A tools in file " << filename << endl;
+        hadErrors = true;
+    }
 
-    gotoxy(x, y + 1);
-    cout << '\xBA';
-    for (int i = 1; i < len - 1; i++) { cout << ' '; }
-    cout << '\xBA';
+    if (!(charCount['B'] == 1 && charCount['7'] == 1 && charCount['8'] == 1 && charCount['9'] == 1)) {
+        cout << "Wrong settings for player B tools in file " << filename << endl;
+        hadErrors = true;
+    }
 
-    gotoxy(x, y + 2);
-    cout << "\xBA  " << message << "  \xBA";
+    charCount.erase('A');charCount.erase('1');charCount.erase('2');charCount.erase('3');
+    charCount.erase('B');charCount.erase('7');charCount.erase('8');charCount.erase('9');
+    charCount.erase(' ');charCount.erase('S');charCount.erase('T');
 
-    gotoxy(x, y + 3);
-    cout << '\xBA';
-    for (int i = 1; i < len - 1; i++) { cout << ' '; }
-    cout << '\xBA';
+    for (const auto &pair : charCount) {
+        cout << "Wrong character on board: " << pair.first << " in file " << filename << endl;
+        hadErrors = true;
+    }
 
-    gotoxy(x, y + 4);
-    cout << '\xC8';
-    for (int i = 1; i < len - 1; i++) { cout << '\xCD'; }
-    cout << '\xBC';
-
-    cout << flush;
-    resetTextColor();
-    Sleep(delay);
+    return hadErrors;
 }

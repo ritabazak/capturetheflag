@@ -47,5 +47,6 @@ void setWindowSize(int width, int height);
 string getCurrentWorkingDirectory();
 string readLine(istream& in);
 list<string> listDirectory(string path, string extension, string filename = "");
+void displayMessage(const string &message, int width, int height, int yOffset, unsigned int delay);
 
 #endif

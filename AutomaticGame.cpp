@@ -64,6 +64,8 @@ bool AutomaticGame::handleTurn() {
 }
 
 BaseGame::Result AutomaticGame::run() {
+    if (BaseGame::run() == Result::EXIT) { return Result::EXIT; }
+
     if (!_quiet) { draw(); }
 
     while (_aMoves.size() || _bMoves.size() ||
@@ -74,7 +76,7 @@ BaseGame::Result AutomaticGame::run() {
         }
     }
 
-    if (!_quiet) { displayMessage("GAME OVER", _delay * 50); }
+    if (!_quiet) { displayMessage("GAME OVER", SCREEN_WIDTH, SCREEN_HEIGHT, Board::BOARD_OFFSET, _delay * 50); }
 
     return Result::GAME_FINISHED;
 }

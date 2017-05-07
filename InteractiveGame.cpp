@@ -1,6 +1,8 @@
 #include "InteractiveGame.h"
 
 InteractiveGame::Result InteractiveGame::run() {
+    if (BaseGame::run() == Result::EXIT) { return Result::EXIT; }
+
     Result menuResult;
 
     do {
@@ -10,7 +12,7 @@ InteractiveGame::Result InteractiveGame::run() {
 
         while (input != ESC) {
             if (handleTurn()) {
-                displayMessage("GAME OVER", _delay * 50);
+                displayMessage("GAME OVER", SCREEN_WIDTH, SCREEN_HEIGHT, Board::BOARD_OFFSET, _delay * 50);
                 return Result::GAME_FINISHED;
             }
 

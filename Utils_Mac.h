@@ -48,6 +48,7 @@ string readLine(istream &in);
 list<string> listDirectory(string path, string extension, string filename = "");
 string getCurrentWorkingDirectory();
 void setWindowSize(int width, int height);
+void displayMessage(const string &message, int width, int height, int yOffset, unsigned int delay);
 
 //enum { BLACK=0, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE };
 enum { BLACK=0, RED, DARK_GREEN, YELLOW, DARK_BLUE, PURPLE, CYAN, WHITE };

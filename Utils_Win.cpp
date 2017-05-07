@@ -97,6 +97,8 @@ list<string> listDirectory(string path, string extension, string filename) {
         }
     }
 
+    files.sort();
+
     return files;
 }
 
@@ -105,5 +107,41 @@ string getCurrentWorkingDirectory() {
     _getcwd(path, 255);
     return string(path);
 }
+
+void displayMessage(const string &message, int width, int height, int yOffset, unsigned int delay) {
+    int len = (int)message.length() + 6;
+    int msgHeight = 5;
+    int x = width / 2 - len / 2;
+    int y = yOffset + height / 2 - msgHeight / 2;
+
+    setTextColor(BLACK, WHITE);
+    gotoxy(x, y);
+    cout << '\xC9';
+    for (int i = 1; i < len - 1; i++) { cout << '\xCD'; }
+    cout << '\xBB';
+
+    gotoxy(x, y + 1);
+    cout << '\xBA';
+    for (int i = 1; i < len - 1; i++) { cout << ' '; }
+    cout << '\xBA';
+
+    gotoxy(x, y + 2);
+    cout << "\xBA  " << message << "  \xBA";
+
+    gotoxy(x, y + 3);
+    cout << '\xBA';
+    for (int i = 1; i < len - 1; i++) { cout << ' '; }
+    cout << '\xBA';
+
+    gotoxy(x, y + 4);
+    cout << '\xC8';
+    for (int i = 1; i < len - 1; i++) { cout << '\xCD'; }
+    cout << '\xBC';
+
+    cout << flush;
+    resetTextColor();
+    Sleep(delay);
+}
+
 
 #endif
