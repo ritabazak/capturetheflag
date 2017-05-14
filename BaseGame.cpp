@@ -20,7 +20,7 @@ BaseGame::BaseGame(Player &playerA,
 
         unsigned int lineLength = min<unsigned int>((unsigned int)line.length(), Board::BOARD_SIZE);
 
-        for (int col = 0; col < lineLength; col++) {
+        for (unsigned int col = 0; col < lineLength; col++) {
             switch (line[col]) {
                 case ' ':
                     break;
@@ -164,6 +164,8 @@ bool BaseGame::hasPawn(const Point &pt, Player::Side player) const {
 }
 
 Pawn &BaseGame::getPawn(const Point &pt, Player::Side player) {
+    // Will only get called if we're sure there's a pawn to retrieve
+    // hence the warning
     if (player == Player::Side::A) {
         for (Pawn &pw : _aPawns) {
             if (pt == pw.getPosition() && pw.isAlive()) {

@@ -88,8 +88,6 @@ BaseGame::Result AutomaticGame::run(int cycle) {
         cout << "Game cycle: " << cycle << endl;
         cout << "Num moves: " << _turn << endl;
         cout << "Winner: " << winnerStr << endl << endl;
-
-        Sleep(_delay * 50);
     }
 
     return Result::GAME_FINISHED;
