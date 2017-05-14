@@ -116,27 +116,27 @@ void displayMessage(const string &message, int width, int height, int yOffset, u
 
     setTextColor(BLACK, WHITE);
     gotoxy(x, y);
-    cout << '\xC9';
-    for (int i = 1; i < len - 1; i++) { cout << '\xCD'; }
-    cout << '\xBB';
+    cout << BoxCharacters::CORNER_TL;
+    for (int i = 1; i < len - 1; i++) { cout << BoxCharacters::HORIZONTAL; }
+    cout << BoxCharacters::CORNER_TR;
 
     gotoxy(x, y + 1);
-    cout << '\xBA';
+    cout << BoxCharacters::VERTICAL;
     for (int i = 1; i < len - 1; i++) { cout << ' '; }
-    cout << '\xBA';
+    cout << BoxCharacters::VERTICAL;
 
     gotoxy(x, y + 2);
-    cout << "\xBA  " << message << "  \xBA";
+    cout << BoxCharacters::VERTICAL  " << message << " BoxCharacters::VERTICAL";
 
     gotoxy(x, y + 3);
-    cout << '\xBA';
+    cout << BoxCharacters::VERTICAL;
     for (int i = 1; i < len - 1; i++) { cout << ' '; }
-    cout << '\xBA';
+    cout << BoxCharacters::VERTICAL;
 
     gotoxy(x, y + 4);
-    cout << '\xC8';
-    for (int i = 1; i < len - 1; i++) { cout << '\xCD'; }
-    cout << '\xBC';
+    cout << BoxCharacters::CORNER_BL;
+    for (int i = 1; i < len - 1; i++) { cout << BoxCharacters::HORIZONTAL; }
+    cout << BoxCharacters::CORNER_BR;
 
     cout << flush;
     resetTextColor();
