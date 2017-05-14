@@ -27,11 +27,11 @@ public:
     void draw(int backColor) const;
     bool isAlive() const { return _alive; }
     void move(Direction dir) { _pos = _pos.getNext(dir); }
-    int whichPlayer() const { return (_key <= '3')? Player::A : Player::B; }
+    Player::Side whichPlayer() const { return (_key <= '3')? Player::Side::A : Player::Side::B; }
     bool canMove(Board::Type cellType) const {
         return cellType == Board::Type::EMP
-               || (whichPlayer() == Player::A && cellType == Board::Type::FLGB)
-               || (whichPlayer() == Player::B && cellType == Board::Type::FLGA)
+               || (whichPlayer() == Player::Side::A && cellType == Board::Type::FLGB)
+               || (whichPlayer() == Player::Side::B && cellType == Board::Type::FLGA)
                || (_canSwim && cellType == Board::Type::SEA)
                || (_canClimbTrees && cellType == Board::Type::FR);
     }

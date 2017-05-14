@@ -15,7 +15,7 @@ class AutomaticGame : public BaseGame {
     Move _bMove;
 
     list<Move> readMoves(string filename);
-    bool handleTurn();
+    Player::Side handleTurn();
 
 public:
     using BaseGame::BaseGame;
@@ -26,5 +26,5 @@ public:
                   bool quiet,
                   const string &filename);
 
-    Result run();
+    Result run(int cycle);
 };

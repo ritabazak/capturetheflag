@@ -49,31 +49,31 @@ BaseGame::BaseGame(Player &playerA,
     initPawns(pawnList);
 }
 
-bool BaseGame::checkVictory(const Pawn &pw) {
+Player::Side BaseGame::checkVictory(const Pawn &pw) {
     if (_board.getCellType(pw.getPosition()) == Board::Type::FLGA) {
         _playerB.increaseScore();
-        return true;
+        return Player::Side::B;
     }
 
     if (_board.getCellType(pw.getPosition()) == Board::Type::FLGB) {
         _playerA.increaseScore();
-        return true;
+        return Player::Side::A;
     }
 
     if (!(_aPawns[0].isAlive() || _aPawns[1].isAlive() || _aPawns[2].isAlive())) {
         _playerB.increaseScore();
-        return true;
+        return Player::Side::B;
     }
 
     if (!(_bPawns[0].isAlive() || _bPawns[1].isAlive() || _bPawns[2].isAlive())) {
         _playerA.increaseScore();
-        return true;
+        return Player::Side::A;
     }
 
-    return false;
+    return Player::Side::ANY;
 }
 
-void BaseGame::movePawn(Pawn &pawn, int player, Direction &dir) {
+void BaseGame::movePawn(Pawn &pawn, Player::Side player, Direction &dir) {
     if (pawn.isAlive()) {
         Board::Type nextCellType = _board.getCellType(pawn.getPosition().getNext(dir));
 
@@ -84,8 +84,8 @@ void BaseGame::movePawn(Pawn &pawn, int player, Direction &dir) {
 
             if (!_quiet) { pawn.draw(_board.getCellColor(nextCellType)); }
 
-            if (hasPawn(pawn.getPosition(), (player + 1) % 2)) { // Check for opposite player pawns
-                Pawn &enemy = getPawn(pawn.getPosition(), (player + 1) % 2);
+            if (hasPawn(pawn.getPosition(), (Player::Side)(((int)player + 1) % 2))) { // Check for opposite player pawns
+                Pawn &enemy = getPawn(pawn.getPosition(), (Player::Side)(((int)player + 1) % 2));
 
                 Pawn::duel(pawn, enemy);
 
@@ -143,8 +143,8 @@ void BaseGame::drawScores() const {
     cout << flush;
 }
 
-bool BaseGame::hasPawn(const Point &pt, int player) const {
-    if (player == Player::A || player == Player::ANY) {
+bool BaseGame::hasPawn(const Point &pt, Player::Side player) const {
+    if (player == Player::Side::A || player == Player::Side::ANY) {
         for (const Pawn &pw : _aPawns) {
             if (pt == pw.getPosition() && pw.isAlive()) {
                 return true;
@@ -152,7 +152,7 @@ bool BaseGame::hasPawn(const Point &pt, int player) const {
         }
     }
 
-    if (player == Player::B || player == Player::ANY) {
+    if (player == Player::Side::B || player == Player::Side::ANY) {
         for (const Pawn &pw : _bPawns) {
             if (pt == pw.getPosition() && pw.isAlive()) {
                 return true;
@@ -163,8 +163,8 @@ bool BaseGame::hasPawn(const Point &pt, int player) const {
     return false;
 }
 
-Pawn &BaseGame::getPawn(const Point &pt, int player) {
-    if (player == Player::A) {
+Pawn &BaseGame::getPawn(const Point &pt, Player::Side player) {
+    if (player == Player::Side::A) {
         for (Pawn &pw : _aPawns) {
             if (pt == pw.getPosition() && pw.isAlive()) {
                 return pw;

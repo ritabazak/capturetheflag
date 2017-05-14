@@ -32,10 +32,10 @@ InteractiveGame::Result InteractiveGame::run() {
 }
 
 bool InteractiveGame::handleTurn() {
-    int player = (_turn % 2)? Player::B : Player::A;
+    Player::Side player = (_turn % 2)? Player::Side::B : Player::Side::A;
 
-    PlayerInput &input = (player == Player::A)? _inputA : _inputB;
-    Pawn *pawns = (player == Player::A)? (Pawn*)_aPawns : (Pawn*)_bPawns;
+    PlayerInput &input = (player == Player::Side::A)? _inputA : _inputB;
+    Pawn *pawns = (player == Player::Side::A)? (Pawn*)_aPawns : (Pawn*)_bPawns;
 
     bool result = false;
 
@@ -43,17 +43,17 @@ bool InteractiveGame::handleTurn() {
         movePawn(pawns[input.getPawn()], player, input.getDirection());
 
         if (_record) {
-            Move &lastMove = (player == Player::A)? _aLastMove : _bLastMove;
+            Move &lastMove = (player == Player::Side::A)? _aLastMove : _bLastMove;
             Move newMove(_turn, input);
 
             if (lastMove != newMove && newMove.dir != Direction::STOPPED) {
-                ofstream &movesFile = (player == Player::A)? _aRecord : _bRecord;
+                ofstream &movesFile = (player == Player::Side::A)? _aRecord : _bRecord;
                 lastMove = newMove;
                 lastMove.writeToFile(movesFile);
             }
         }
 
-        result = checkVictory(pawns[input.getPawn()]);
+        result = checkVictory(pawns[input.getPawn()]) != Player::Side::ANY;
         gotoxy(SCREEN_START, Board::BOARD_OFFSET + SCREEN_HEIGHT);
     }
 

@@ -16,8 +16,8 @@ private:
     Player &_playerA, &_playerB;
     bool _errorFlag = false;
 
-    bool hasPawn(const Point &pt, int player = Player::ANY) const;
-    Pawn &getPawn(const Point &pt, int player);
+    bool hasPawn(const Point &pt, Player::Side player = Player::Side::ANY) const;
+    Pawn &getPawn(const Point &pt, Player::Side player);
     Point getValidPawnPosition() const;
     void initPawns();
     void initPawns(list<pair<Point, char>> pawnList);
@@ -32,8 +32,8 @@ protected:
     unsigned int _turn = 0;
 
     void draw() const;
-    void movePawn(Pawn &pawn, int player, Direction &dir);
-    bool checkVictory(const Pawn &pw);
+    void movePawn(Pawn &pawn, Player::Side player, Direction &dir);
+    Player::Side checkVictory(const Pawn &pw);
     Result run() { return _errorFlag? Result::EXIT_WITH_ERRORS : Result::GAME_CONTINUED; }
 
 public:

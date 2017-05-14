@@ -10,29 +10,30 @@ void Pawn::draw(int backColor) const {
 }
 
 void Pawn::duel(Pawn &a, Pawn &b) {
-    if (a.whichPlayer() == Player::B) {
+    if (a.whichPlayer() == Player::Side::B) {
         return duel(b, a);
     }
 
-    int winner = Player::A;
+    Player::Side winner = Player::Side::A;
+    
     int x = a._pos.getX(), y = a._pos.getY();
 
     if (a._key == '1') {
         if (x == 3 || (y >= 9 && y <= 12)) {
-            winner = Player::B;
+            winner = Player::Side::B;
         }
     }
     else if (a._key == '2') {
         if (b._key == '9' || (x != 10 && y != 2 && y != 3)) {
-            winner = Player::B;
+            winner = Player::Side::B;
         }
     }
     else if (a._key == '3') {
         if (x != 6 && y != 7) {
-            winner = Player::B;
+            winner = Player::Side::B;
         }
     }
 
-    a._alive = winner == Player::A;
-    b._alive = winner == Player::B;
+    a._alive = winner == Player::Side::A;
+    b._alive = winner == Player::Side::B;
 }

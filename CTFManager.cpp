@@ -85,7 +85,7 @@ CTFManager::Result CTFManager::startGame(bool swapped) {
 
         do {
             if (movesFromFile()) {
-                gameResult = AutomaticGame(leftPlayer, rightPlayer, _args.delay(), _args.quiet(), file).run();
+                gameResult = AutomaticGame(leftPlayer, rightPlayer, _args.delay(), _args.quiet(), file).run(_round);
             }
             else if (boardFromFile()) {
                 gameResult = InteractiveGame(leftPlayer, rightPlayer, _args.delay(), _record, file).run();
@@ -130,7 +130,7 @@ void CTFManager::run() {
 }
 
 void CTFManager::printSummary() const {
-    clearScreen();
+    if (!_args.quiet()) { clearScreen(); }
 
     cout << "Game Summary" << endl;
     cout << _playerA.getName() << " points: " << _playerA.getScore() << endl;

@@ -12,7 +12,7 @@ class Player {
     int setScore(int score) { return _score = score; }
 
 public:
-    enum { ANY = -1, A, B };
+    enum class Side { ANY = -1, A, B };
 
     Player(const string name, int score = 0) {
         setName(name);
