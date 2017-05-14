@@ -116,27 +116,27 @@ void displayMessage(const string &message, int width, int height, int yOffset, u
 
     setTextColor(BLACK, WHITE);
     gotoxy(x, y);
-    cout << BoxCharacters::CORNER_TL;
-    for (int i = 1; i < len - 1; i++) { cout << BoxCharacters::HORIZONTAL; }
-    cout << BoxCharacters::CORNER_TR;
+    cout << (char)BoxCharacters::CORNER_TL;
+    for (int i = 1; i < len - 1; i++) { cout << (char)BoxCharacters::HORIZONTAL; }
+    cout << (char)BoxCharacters::CORNER_TR;
 
     gotoxy(x, y + 1);
-    cout << BoxCharacters::VERTICAL;
+    cout << (char)BoxCharacters::VERTICAL;
     for (int i = 1; i < len - 1; i++) { cout << ' '; }
-    cout << BoxCharacters::VERTICAL;
+    cout << (char)BoxCharacters::VERTICAL;
 
     gotoxy(x, y + 2);
-    cout << BoxCharacters::VERTICAL  " << message << " BoxCharacters::VERTICAL";
+    cout << (char)BoxCharacters::VERTICAL << "  " << message << "  " << (char)BoxCharacters::VERTICAL;
 
     gotoxy(x, y + 3);
-    cout << BoxCharacters::VERTICAL;
+    cout << (char)BoxCharacters::VERTICAL;
     for (int i = 1; i < len - 1; i++) { cout << ' '; }
-    cout << BoxCharacters::VERTICAL;
+    cout << (char)BoxCharacters::VERTICAL;
 
     gotoxy(x, y + 4);
-    cout << BoxCharacters::CORNER_BL;
-    for (int i = 1; i < len - 1; i++) { cout << BoxCharacters::HORIZONTAL; }
-    cout << BoxCharacters::CORNER_BR;
+    cout << (char)BoxCharacters::CORNER_BL;
+    for (int i = 1; i < len - 1; i++) { cout << (char)BoxCharacters::HORIZONTAL; }
+    cout << (char)BoxCharacters::CORNER_BR;
 
     cout << flush;
     resetTextColor();

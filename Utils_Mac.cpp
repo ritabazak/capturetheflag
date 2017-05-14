@@ -126,7 +126,7 @@ void displayMessage(const string &message, int width, int height, int yOffset, u
     cout << (char)BoxCharacters::VERTICAL;
 
     gotoxy(x, y + 2);
-    cout << (char)BoxCharacters::VERTICAL << ' ' << message << ' ' << (char)BoxCharacters::VERTICAL;
+    cout << (char)BoxCharacters::VERTICAL << "  " << message << "  " << (char)BoxCharacters::VERTICAL;
 
     gotoxy(x, y + 3);
     cout << (char)BoxCharacters::VERTICAL;
