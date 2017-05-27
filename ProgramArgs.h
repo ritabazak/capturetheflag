@@ -7,10 +7,10 @@
 
 using namespace std;
 
-class ProgramArgs{
+class ProgramArgs {
 public:
     enum class BoardSource { RANDOM, FILE };
-    enum class MovesSource { KEYBOARD, FILE};
+    enum class MovesSource { KEYBOARD, FILE, ALGORITHM };
 
 private:
     BoardSource _boardSource;
@@ -18,6 +18,8 @@ private:
     string _path;
     unsigned int _delay;
     bool _quiet;
+    unsigned int _randomBoards;
+    bool _save;
 
     ProgramArgs();
 
@@ -29,4 +31,6 @@ public:
     string path() const { return _path; }
     unsigned int delay() const { return _delay; }
     bool quiet() const { return _quiet; }
+    unsigned int randomBoards() const { return _randomBoards; }
+    bool save() const { return _save; }
 };

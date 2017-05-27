@@ -20,11 +20,19 @@ ProgramArgs::ProgramArgs(char **argv, int size) : ProgramArgs() {
             if (args[i] == "f" || args[i] == "F") {
                 _boardSource = BoardSource::FILE;
             }
+
+            if (i + 1 < size && args[i + 1][0] != '-') {
+                i++;
+                _randomBoards = (unsigned int)stoul(args[i]);
+            }
         }
         else if (args[i] == "-moves") {
             i++;
             if (args[i] == "f" || args[i] == "F") {
                 _movesSource = MovesSource::FILE;
+            }
+            else if (args[i] == "a" || args[i] == "A") {
+                _movesSource = MovesSource::ALGORITHM;
             }
         }
         else if (args[i] == "-path") {
@@ -32,6 +40,9 @@ ProgramArgs::ProgramArgs(char **argv, int size) : ProgramArgs() {
         }
         else if (args[i] == "-quiet") {
             _quiet = true;
+        }
+        else if (args[i] == "-save") {
+            _save = true;
         }
         else if (args[i] == "-delay") {
             _delay = (unsigned int)atoi(args[++i].c_str());
