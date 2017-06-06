@@ -2,7 +2,7 @@
 
 ProgramArgs::ProgramArgs()
         : _boardSource(BoardSource::RANDOM),
-          _movesSource(MovesSource::KEYBOARD),
+          _movesSource(MovesSource::ALGORITHM),
           _delay(20),
           _quiet(false),
           _path(getCurrentWorkingDirectory()) { }

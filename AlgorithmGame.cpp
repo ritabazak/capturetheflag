@@ -1,12 +1,14 @@
-#include "BaseGame.h"
+#include "AlgorithmGame.h"
 
-BaseGame::BaseGame(Player &playerA,
-                   Player &playerB,
-                   unsigned int delay,
-                   const string &filename)
+AlgorithmGame::AlgorithmGame(Player &playerA,
+                             Player &playerB,
+                             unsigned int delay,
+                             bool quiet,
+                             const string &filename)
         : _playerA(playerA),
           _playerB(playerB),
           _delay(delay),
+          _quiet(quiet),
           _board(ProgramArgs::BoardSource::FILE) {
     list<pair<Point, Board::Type>> boardList;
     list<pair<Point, char>> pawnList;
@@ -49,7 +51,7 @@ BaseGame::BaseGame(Player &playerA,
     initPawns(pawnList);
 }
 
-Player::Side BaseGame::checkVictory(const Pawn &pw) {
+Player::Side AlgorithmGame::checkVictory(const Pawn &pw) {
     if (_board.getCellType(pw.getPosition()) == Board::Type::FLGA) {
         _playerB.increaseScore();
         return Player::Side::B;
@@ -73,19 +75,20 @@ Player::Side BaseGame::checkVictory(const Pawn &pw) {
     return Player::Side::ANY;
 }
 
-void BaseGame::movePawn(Pawn &pawn, Player::Side player, Direction &dir) {
+void AlgorithmGame::movePawn(Pawn &pawn, Player::Side player, const Point &pt) {
     if (pawn.isAlive()) {
-        Board::Type nextCellType = _board.getCellType(pawn.getPosition().getNext(dir));
+        Board::Type nextCellType = _board.getCellType(pt);
 
-        if (pawn.canMove(nextCellType) && !hasPawn(pawn.getPosition().getNext(dir), player)) {
+        if (pawn.canMove(nextCellType) && !hasPawn(pt, player)) {
             if (!_quiet) { _board.drawCell(pawn.getPosition()); }
 
-            pawn.move(dir);
+            pawn.move(pt);
 
             if (!_quiet) { pawn.draw(_board.getCellColor(nextCellType)); }
 
-            if (hasPawn(pawn.getPosition(), (Player::Side)(((int)player + 1) % 2))) { // Check for opposite player pawns
-                Pawn &enemy = getPawn(pawn.getPosition(), (Player::Side)(((int)player + 1) % 2));
+            // Check for opposite player pawns in the same position
+            if (hasPawn(pt, (Player::Side)(((int)player + 1) % 2))) {
+                Pawn &enemy = getPawn(pt, (Player::Side)(((int)player + 1) % 2));
 
                 Pawn::duel(pawn, enemy);
 
@@ -94,16 +97,10 @@ void BaseGame::movePawn(Pawn &pawn, Player::Side player, Direction &dir) {
                 }
             }
         }
-        else {
-            dir = Direction::STOPPED;
-        }
-    }
-    else {
-        dir = Direction::STOPPED;
     }
 }
 
-void BaseGame::draw() const {
+void AlgorithmGame::draw() const {
     hideCursor();
     clearScreen();
 
@@ -118,7 +115,7 @@ void BaseGame::draw() const {
     }
 }
 
-void BaseGame::drawScores() const {
+void AlgorithmGame::drawScores() const {
     int aColor = _board.getCellColor(Board::Type::FLGA);
     int bColor = _board.getCellColor(Board::Type::FLGB);
 
@@ -143,7 +140,7 @@ void BaseGame::drawScores() const {
     cout << flush;
 }
 
-bool BaseGame::hasPawn(const Point &pt, Player::Side player) const {
+bool AlgorithmGame::hasPawn(const Point &pt, Player::Side player) const {
     if (player == Player::Side::A || player == Player::Side::ANY) {
         for (const Pawn &pw : _aPawns) {
             if (pt == pw.getPosition() && pw.isAlive()) {
@@ -163,7 +160,7 @@ bool BaseGame::hasPawn(const Point &pt, Player::Side player) const {
     return false;
 }
 
-Pawn &BaseGame::getPawn(const Point &pt, Player::Side player) {
+Pawn &AlgorithmGame::getPawn(const Point &pt, Player::Side player) {
     // Will only get called if we're sure there's a pawn to retrieve
     // hence the warning
     if (player == Player::Side::A) {
@@ -182,7 +179,7 @@ Pawn &BaseGame::getPawn(const Point &pt, Player::Side player) {
     }
 }
 
-Point BaseGame::getValidPawnPosition() const {
+Point AlgorithmGame::getValidPawnPosition() const {
     Point p;
 
     do {
@@ -192,7 +189,7 @@ Point BaseGame::getValidPawnPosition() const {
     return p;
 }
 
-void BaseGame::initPawns() {
+void AlgorithmGame::initPawns() {
     int aColor = _board.getCellColor(Board::Type::FLGA);
     int bColor = _board.getCellColor(Board::Type::FLGB);
 
@@ -205,7 +202,7 @@ void BaseGame::initPawns() {
     _bPawns[2] = Pawn(getValidPawnPosition(), '9', bColor);
 }
 
-void BaseGame::initPawns(list<pair<Point, char>> pawnList) {
+void AlgorithmGame::initPawns(list<pair<Point, char>> pawnList) {
     int aColor = _board.getCellColor(Board::Type::FLGA);
     int bColor = _board.getCellColor(Board::Type::FLGB);
 
@@ -235,7 +232,7 @@ void BaseGame::initPawns(list<pair<Point, char>> pawnList) {
     }
 }
 
-bool BaseGame::errorCheck(map<char, unsigned int> charCount, const string &filename) {
+bool AlgorithmGame::errorCheck(map<char, unsigned int> charCount, const string &filename) {
     bool hadErrors = false;
 
     if (!(charCount['A'] == 1 && charCount['1'] == 1 && charCount['2'] == 1 && charCount['3'] == 1)) {
@@ -261,4 +258,54 @@ bool BaseGame::errorCheck(map<char, unsigned int> charCount, const string &filen
     }
 
     return hadErrors;
+}
+
+Player::Side AlgorithmGame::handleTurn() {
+    Player::Side winner = Player::Side::ANY;
+    GameMove move;
+
+    if (_turn % 2 == 0) {
+        Pawn &pawn = getPawn(Point(move, true), Player::Side::A);
+        movePawn(pawn, Player::Side::A, Point(move, false));
+        winner = checkVictory(pawn);
+    }
+
+    else {
+        Pawn &pawn = getPawn(Point(move, true), Player::Side::B);
+        movePawn(pawn, Player::Side::B, Point(move, false));
+        winner = checkVictory(pawn);
+    }
+
+    if (!_quiet) { Sleep(_delay); }
+
+    ++_turn;
+    return winner;
+}
+
+AlgorithmGame::Result AlgorithmGame::run(int cycle) {
+    if (_errorFlag) {
+        return Result::EXIT_WITH_ERRORS;
+    }
+
+    if (!_quiet) { draw(); }
+
+    Player::Side winner = Player::Side::ANY;
+
+    while (winner == Player::Side::ANY && _turn < ALGORITHM_TIMEOUT) {
+        winner = handleTurn();
+    }
+
+    if (!_quiet) { displayMessage("GAME OVER", SCREEN_WIDTH, SCREEN_HEIGHT, Board::BOARD_OFFSET, _delay * 50); }
+    else if (_turn) {
+        string winnerStr = "NONE";
+        if (winner != Player::Side::ANY) {
+            winnerStr = winner == Player::Side::A ? "A" : "B";
+        }
+
+        cout << "Game cycle: " << cycle << endl;
+        cout << "Num moves: " << _turn << endl;
+        cout << "Winner: " << winnerStr << endl << endl;
+    }
+
+    return Result::GAME_FINISHED;
 }
