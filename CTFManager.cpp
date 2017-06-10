@@ -12,6 +12,11 @@ CTFManager::Result CTFManager::startGame() {
     AlgorithmGame::Result gameResult;
     string file;
 
+    AbstractPlayer *moverA = new AlgoPlayer;
+    moverA->setPlayer(1);
+    AbstractPlayer *moverB = new AlgoPlayer;
+    moverB->setPlayer(2);
+
     do {
         if (boardFromFile()) {
             if (_boardFiles.empty()) {
@@ -26,10 +31,10 @@ CTFManager::Result CTFManager::startGame() {
         }
 
         if (boardFromFile()) {
-            gameResult = AlgorithmGame(_playerA, _playerB, _args.delay(), _args.quiet(), file).run(_round);
+            gameResult = AlgorithmGame(_playerA, _playerB, *moverA, *moverB, _args.delay(), _args.quiet(), file).run(_round);
         }
         else {
-            gameResult = AlgorithmGame(_playerA, _playerB, _args.delay(), _args.quiet()).run(_round);
+            gameResult = AlgorithmGame(_playerA, _playerB, *moverA, *moverB, _args.delay(), _args.quiet()).run(_round);
         }
 
         ++_round;

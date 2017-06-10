@@ -7,6 +7,8 @@
 #include "Utils.h"
 #include "Player.h"
 #include "AlgorithmGame.h"
+#include "AbstractPlayer.h"
+#include "AlgoPlayer.h"
 
 using namespace std;
 

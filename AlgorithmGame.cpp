@@ -2,14 +2,20 @@
 
 AlgorithmGame::AlgorithmGame(Player &playerA,
                              Player &playerB,
+                             AbstractPlayer &moverA,
+                             AbstractPlayer &moverB,
                              unsigned int delay,
                              bool quiet,
                              const string &filename)
         : _playerA(playerA),
           _playerB(playerB),
+          _moverA(moverA),
+          _moverB(moverB),
           _delay(delay),
           _quiet(quiet),
-          _board(ProgramArgs::BoardSource::FILE) {
+          _board(ProgramArgs::BoardSource::FILE),
+          _aData(1, _board, *this),
+          _bData(2, _board, *this) {
     list<pair<Point, Board::Type>> boardList;
     list<pair<Point, char>> pawnList;
 
@@ -49,6 +55,9 @@ AlgorithmGame::AlgorithmGame(Player &playerA,
 
     _board.setCells(boardList);
     initPawns(pawnList);
+
+    //TODO: _moverA.init()
+    //TODO: _moberB.init()
 }
 
 Player::Side AlgorithmGame::checkVictory(const Pawn &pw) {

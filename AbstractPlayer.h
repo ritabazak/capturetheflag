@@ -14,4 +14,4 @@ public:
     virtual void init(const BoardData& board) = 0;
     virtual GameMove play(const GameMove& opponentsMove) = 0;
     virtual string getName() const = 0;
-}
+};

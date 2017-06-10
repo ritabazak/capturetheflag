@@ -5,6 +5,8 @@
 #include "Player.h"
 #include "Pawn.h"
 #include "GameMove.h"
+#include "AbstractPlayer.h"
+#include "ExtendedBoardData.h"
 
 class AlgorithmGame {
 public:
@@ -13,6 +15,8 @@ public:
 private:
     enum { ALGORITHM_TIMEOUT=50 };
     Player &_playerA, &_playerB;
+    AbstractPlayer &_moverA, &_moverB;
+    ExtendedBoardData _aData, _bData;
     Pawn _aPawns[3], _bPawns[3];
     Board _board;
     bool _quiet = false;
@@ -20,8 +24,6 @@ private:
     unsigned int _turn = 0;
     bool _errorFlag = false;
 
-    bool hasPawn(const Point &pt, Player::Side player = Player::Side::ANY) const;
-    Pawn &getPawn(const Point &pt, Player::Side player);
     Point getValidPawnPosition() const;
     void initPawns();
     void initPawns(list<pair<Point, char>> pawnList);
@@ -36,21 +38,34 @@ public:
     // Random board
     AlgorithmGame(Player &playerA,
                   Player &playerB,
+                  AbstractPlayer &moverA,
+                  AbstractPlayer &moverB,
                   unsigned int delay,
                   bool quiet)
             : _playerA(playerA),
               _playerB(playerB),
+              _moverA(moverA),
+              _moverB(moverB),
+              _aData(1, _board, *this),
+              _bData(2, _board, *this),
               _delay(delay),
               _quiet(quiet) {
         initPawns();
+
+        //TODO: _moverA.init()
+        //TODO: _moberB.init()
     }
 
     // Board from file
     AlgorithmGame(Player &playerA,
                   Player &playerB,
+                  AbstractPlayer &moverA,
+                  AbstractPlayer &moverB,
                   unsigned int delay,
                   bool quiet,
                   const string &filename);
 
+    bool hasPawn(const Point &pt, Player::Side player = Player::Side::ANY) const;
+    Pawn &getPawn(const Point &pt, Player::Side player);
     Result run(int cycle);
 };
