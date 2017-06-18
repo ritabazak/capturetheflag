@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class AlgoPlayer : public AbstractPlayer {
+class AlgoPlayer_304824170_318110376 : public AbstractPlayer {
     enum { MAX_DISTANCE = BoardData::cols + BoardData::rows - 1 };
 
     class Point {
@@ -71,7 +71,7 @@ class AlgoPlayer : public AbstractPlayer {
     int getDefeatScore(const Point &enemyPos, char key) const;
 
 public:
-    AlgoPlayer(double attackLevel, double flagLevel)
+    AlgoPlayer_304824170_318110376(double attackLevel, double flagLevel)
             : _attackLevel(attackLevel),
               _flagLevel(flagLevel),
               _myLastMove(0, 0, 0, 0) {}
@@ -82,7 +82,7 @@ public:
     GameMove play(const GameMove& opponentsMove) override;
     string getName() const override {
         stringstream ss;
-        ss << "algo_" << _attackLevel << "_" << _flagLevel << "_304824170_318110376";
+        ss << "algo" << _attackLevel << "_" << _flagLevel << "_304824170_318110376";
         return ss.str();
     }
 };

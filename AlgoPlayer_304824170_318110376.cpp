@@ -1,6 +1,6 @@
-#include "AlgoPlayer.h"
+#include "AlgoPlayer_304824170_318110376.h"
 
-void AlgoPlayer::init(const BoardData &board) {
+void AlgoPlayer_304824170_318110376::init(const BoardData &board) {
     _bd = &board;
     int e = 0;
     _myLastMove = GameMove(0, 0, 0, 0);
@@ -35,7 +35,7 @@ void AlgoPlayer::init(const BoardData &board) {
     }
 }
 
-GameMove AlgoPlayer::play(const GameMove& opponentsMove) {
+GameMove AlgoPlayer_304824170_318110376::play(const GameMove& opponentsMove) {
     updateGameState(opponentsMove);
     PossibleMove bestMove = getBestMove();
 
@@ -47,7 +47,7 @@ GameMove AlgoPlayer::play(const GameMove& opponentsMove) {
     return _myLastMove;
 }
 
-AlgoPlayer::PossibleMove AlgoPlayer::getBestMove() {
+AlgoPlayer_304824170_318110376::PossibleMove AlgoPlayer_304824170_318110376::getBestMove() {
     vector<PossibleMove> moves = getAllPossibleMoves();
 
     if (moves.empty()) {
@@ -69,7 +69,7 @@ AlgoPlayer::PossibleMove AlgoPlayer::getBestMove() {
     return moves[maxIndex];
 }
 
-void AlgoPlayer::calculateMoveScore(PossibleMove &move) const {
+void AlgoPlayer_304824170_318110376::calculateMoveScore(PossibleMove &move) const {
     int flagScore = getFlagScore(move);
     int attackScore = getAttackScore(move);
 
@@ -87,12 +87,12 @@ void AlgoPlayer::calculateMoveScore(PossibleMove &move) const {
     }
 }
 
-int AlgoPlayer::getFlagScore(const PossibleMove &move) const {
+int AlgoPlayer_304824170_318110376::getFlagScore(const PossibleMove &move) const {
     int distance = move.destination.distance(_enemyFlag);
     return (MAX_DISTANCE - distance) * 100 / (double)MAX_DISTANCE;
 }
 
-int AlgoPlayer::getAttackScore(const PossibleMove &move) const {
+int AlgoPlayer_304824170_318110376::getAttackScore(const PossibleMove &move) const {
     int minDistance = MAX_DISTANCE;
     int pawnIndex;
     for (int i = 0; i < 3; i++) {
@@ -113,7 +113,7 @@ int AlgoPlayer::getAttackScore(const PossibleMove &move) const {
     return (int)(distanceScore * defeatScore / 100.0);
 }
 
-int AlgoPlayer::getDefeatScore(const Point &enemyPos, char key) const {
+int AlgoPlayer_304824170_318110376::getDefeatScore(const Point &enemyPos, char key) const {
     int x = enemyPos.getX() + 1;
     int y = enemyPos.getY() + 1;
 
@@ -145,7 +145,7 @@ int AlgoPlayer::getDefeatScore(const Point &enemyPos, char key) const {
     }
 }
 
-vector<AlgoPlayer::PossibleMove> AlgoPlayer::getAllPossibleMoves() {
+vector<AlgoPlayer_304824170_318110376::PossibleMove> AlgoPlayer_304824170_318110376::getAllPossibleMoves() {
     vector<PossibleMove> moves;
 
     for (int i = 0; i < 3; i++) {
@@ -157,7 +157,7 @@ vector<AlgoPlayer::PossibleMove> AlgoPlayer::getAllPossibleMoves() {
     return moves;
 }
 
-void AlgoPlayer::addPossibleMoves(vector<PossibleMove> &moves, PlayerPawn &pawn) const {
+void AlgoPlayer_304824170_318110376::addPossibleMoves(vector<PossibleMove> &moves, PlayerPawn &pawn) const {
     Point up(pawn.pos.getX(), pawn.pos.getY() - 1);
     Point down(pawn.pos.getX(), pawn.pos.getY() + 1);
     Point left(pawn.pos.getX() - 1, pawn.pos.getY());
@@ -181,7 +181,7 @@ void AlgoPlayer::addPossibleMoves(vector<PossibleMove> &moves, PlayerPawn &pawn)
     }
 }
 
-void AlgoPlayer::updateGameState(const GameMove &opponentsMove) {
+void AlgoPlayer_304824170_318110376::updateGameState(const GameMove &opponentsMove) {
     if (_myLastMove.from_x) {
         char from = _bd->charAt(_myLastMove.from_x, _myLastMove.from_y);
         char to = _bd->charAt(_myLastMove.to_x, _myLastMove.to_y);
@@ -224,7 +224,7 @@ void AlgoPlayer::updateGameState(const GameMove &opponentsMove) {
     }
 }
 
-bool AlgoPlayer::canMove(const PlayerPawn& pawn, const Point &dest) const {
+bool AlgoPlayer_304824170_318110376::canMove(const PlayerPawn& pawn, const Point &dest) const {
     if (dest.getX() < 0 || dest.getY() < 0 ||
         dest.getX() >= BoardData::cols || dest.getY() >= BoardData::rows) {
         return false;
@@ -239,7 +239,7 @@ bool AlgoPlayer::canMove(const PlayerPawn& pawn, const Point &dest) const {
     return (_player == 1 && type == 'B') || (_player == 2 && type == 'A');
 }
 
-int AlgoPlayer::findByPosition(int player, const Point &pt) const {
+int AlgoPlayer_304824170_318110376::findByPosition(int player, const Point &pt) const {
 //assuming there ius actually a pawn there
     if (player == _player) {
         for (int i = 0; i < 3; i++) {
@@ -259,13 +259,13 @@ int AlgoPlayer::findByPosition(int player, const Point &pt) const {
     return -1;
 }
 
-bool AlgoPlayer::canSwim(const PlayerPawn &pawn) const {
+bool AlgoPlayer_304824170_318110376::canSwim(const PlayerPawn &pawn) const {
     int pawnIndex = (_player == 1) ? pawn.key - '1' : pawn.key - '7';
     return (_player == 1 && pawnIndex >= 1) ||
            (_player == 2 && pawnIndex == 0);
 }
 
-bool AlgoPlayer::canClimbTrees(const PlayerPawn &pawn) const {
+bool AlgoPlayer_304824170_318110376::canClimbTrees(const PlayerPawn &pawn) const {
     int pawnIndex = (_player == 1) ? pawn.key - '1' : pawn.key - '7';
     return (_player == 1 && pawnIndex == 1) ||
            (_player == 2 && pawnIndex <= 1);

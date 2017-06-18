@@ -8,7 +8,7 @@
 #include "Player.h"
 #include "AlgorithmGame.h"
 #include "AbstractPlayer.h"
-#include "AlgoPlayer.h"
+#include "AlgoPlayer_304824170_318110376.h"
 #include "AlgorithmRegistration.h"
 
 using namespace std;
