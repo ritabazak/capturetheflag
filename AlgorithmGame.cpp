@@ -1,5 +1,28 @@
 #include "AlgorithmGame.h"
 
+// Random board
+AlgorithmGame::AlgorithmGame(Player &playerA,
+                             Player &playerB,
+                             AbstractPlayer &moverA,
+                             AbstractPlayer &moverB,
+                             unsigned int delay,
+                             bool quiet)
+        : _playerA(playerA),
+          _playerB(playerB),
+          _moverA(moverA),
+          _moverB(moverB),
+          _aData(*(new ExtendedBoardData(1, _board, this))),
+          _bData(*(new ExtendedBoardData(2, _board, this))),
+          _delay(delay),
+          _quiet(quiet),
+          _lastMove(0, 0, 0, 0) {
+    initPawns();
+
+    _moverA.init(_aData);
+    _moverB.init(_bData);
+}
+
+// Board from file
 AlgorithmGame::AlgorithmGame(Player &playerA,
                              Player &playerB,
                              AbstractPlayer &moverA,
@@ -13,9 +36,18 @@ AlgorithmGame::AlgorithmGame(Player &playerA,
           _moverB(moverB),
           _delay(delay),
           _quiet(quiet),
+          _lastMove(0, 0, 0, 0),
           _board(ProgramArgs::BoardSource::FILE),
-          _aData(1, _board, *this),
-          _bData(2, _board, *this) {
+          _aData(*(new ExtendedBoardData(1, _board, this))),
+          _bData(*(new ExtendedBoardData(2, _board, this))) {
+
+    readBoardFile(filename);
+    _moverA.init(_aData);
+    _moverB.init(_bData);
+};
+
+
+void AlgorithmGame::readBoardFile(const string filename) {
     list<pair<Point, Board::Type>> boardList;
     list<pair<Point, char>> pawnList;
 
@@ -34,11 +66,11 @@ AlgorithmGame::AlgorithmGame(Player &playerA,
                     break;
                 case 'T': case 'S':
                     boardList.push_back(pair<Point, Board::Type>(Point(col, row),
-                                                                 (line[col] == 'T')? Board::Type::FR : Board::Type::SEA));
+                                                                 (line[col] == 'T') ? Board::Type::FR : Board::Type::SEA));
                     break;
                 case 'A': case 'B':
                     boardList.push_back(pair<Point, Board::Type>(Point(col, row),
-                                                                 (line[col] == 'A')? Board::Type::FLGA : Board::Type::FLGB));
+                                                                 (line[col] == 'A') ? Board::Type::FLGA : Board::Type::FLGB));
                     break;
                 case '1': case '2': case '3': case '7': case '8': case '9':
                     pawnList.push_back(pair<Point, char>(Point(col, row), line[col]));
@@ -55,9 +87,6 @@ AlgorithmGame::AlgorithmGame(Player &playerA,
 
     _board.setCells(boardList);
     initPawns(pawnList);
-
-    //TODO: _moverA.init()
-    //TODO: _moberB.init()
 }
 
 Player::Side AlgorithmGame::checkVictory(const Pawn &pw) {
@@ -256,9 +285,9 @@ bool AlgorithmGame::errorCheck(map<char, unsigned int> charCount, const string &
         hadErrors = true;
     }
 
-    charCount.erase('A');charCount.erase('1');charCount.erase('2');charCount.erase('3');
-    charCount.erase('B');charCount.erase('7');charCount.erase('8');charCount.erase('9');
-    charCount.erase(' ');charCount.erase('S');charCount.erase('T');
+    charCount.erase('A'); charCount.erase('1'); charCount.erase('2'); charCount.erase('3');
+    charCount.erase('B'); charCount.erase('7'); charCount.erase('8'); charCount.erase('9');
+    charCount.erase(' '); charCount.erase('S'); charCount.erase('T');
 
     for (const auto &pair : charCount) {
         if (!hadErrors) { clearScreen(); }
@@ -271,17 +300,18 @@ bool AlgorithmGame::errorCheck(map<char, unsigned int> charCount, const string &
 
 Player::Side AlgorithmGame::handleTurn() {
     Player::Side winner = Player::Side::ANY;
-    GameMove move;
 
     if (_turn % 2 == 0) {
-        Pawn &pawn = getPawn(Point(move, true), Player::Side::A);
-        movePawn(pawn, Player::Side::A, Point(move, false));
+        _lastMove = _moverA.play(_lastMove);
+        Pawn &pawn = getPawn(Point(_lastMove, true), Player::Side::A);
+        movePawn(pawn, Player::Side::A, Point(_lastMove, false));
         winner = checkVictory(pawn);
     }
 
     else {
-        Pawn &pawn = getPawn(Point(move, true), Player::Side::B);
-        movePawn(pawn, Player::Side::B, Point(move, false));
+        _lastMove = _moverB.play(_lastMove);
+        Pawn &pawn = getPawn(Point(_lastMove, true), Player::Side::B);
+        movePawn(pawn, Player::Side::B, Point(_lastMove, false));
         winner = checkVictory(pawn);
     }
 
@@ -296,7 +326,10 @@ AlgorithmGame::Result AlgorithmGame::run(int cycle) {
         return Result::EXIT_WITH_ERRORS;
     }
 
-    if (!_quiet) { draw(); }
+    if (!_quiet) {
+        draw();
+        Sleep(_delay);
+    }
 
     Player::Side winner = Player::Side::ANY;
 

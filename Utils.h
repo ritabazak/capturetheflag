@@ -9,6 +9,3 @@
 #include "Utils_Win.h"
 
 #endif
-
-//TODO: Create const
-//TODO: Find 🍑 for Amit
