@@ -6,35 +6,42 @@
 #include "ProgramArgs.h"
 #include "Utils.h"
 #include "Player.h"
-#include "BaseGame.h"
-#include "InteractiveGame.h"
-#include "AutomaticGame.h"
+#include "AlgorithmGame.h"
+#include "AbstractPlayer.h"
+#include "AlgoPlayer_304824170_318110376.h"
+#include "AlgorithmRegistration.h"
 
 using namespace std;
 
 class CTFManager {
-    enum class Result { SHOW_MENU, EXIT, EXIT_WITH_ERRORS};
+    enum class Result { EXIT, EXIT_WITH_ERRORS };
 
     const ProgramArgs &_args;
     list<string> _boardFiles;
 
     unsigned int _round = 0;
-    bool _record = false;
     Player _playerA;
     Player _playerB;
+    AbstractPlayer *_moverA = nullptr, *_moverB = nullptr;
 
-    Result mainMenu();
-    void setNames();
-    void resetScore();
-    Result startGame(bool swapped = false);
+    Result startGame();
 
-    void printSummary() const;
+    void printSummary() const {
+        if (!_args.quiet()) { clearScreen(); }
 
+        cout << "Game Summary" << endl;
+        cout << _moverA->getName() << " for A points: " << _playerA.getScore() << endl;
+        cout << _moverB->getName() << " for B points: " << _playerB.getScore() << endl;
+    }
     bool boardFromFile() const { return _args.boardSource() == ProgramArgs::BoardSource::FILE; }
-    bool movesFromFile() const { return _args.movesSource() == ProgramArgs::MovesSource::FILE; }
 
 public:
     CTFManager(const ProgramArgs &args);
+
+    ~CTFManager() {
+        delete _moverA;
+        delete _moverB;
+    }
 
     void run();
 };

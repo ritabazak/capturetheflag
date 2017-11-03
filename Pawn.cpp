@@ -15,7 +15,7 @@ void Pawn::duel(Pawn &a, Pawn &b) {
     }
 
     Player::Side winner = Player::Side::A;
-    
+
     int x = a._pos.getX(), y = a._pos.getY();
 
     if (a._key == '1') {
