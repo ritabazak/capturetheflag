@@ -2,10 +2,9 @@
 
 ProgramArgs::ProgramArgs()
         : _boardSource(BoardSource::RANDOM),
-          _movesSource(MovesSource::ALGORITHM),
+          _movesSource(MovesSource::KEYBOARD),
           _delay(20),
           _quiet(false),
-          _randomBoards(20),
           _path(getCurrentWorkingDirectory()) { }
 
 ProgramArgs::ProgramArgs(char **argv, int size) : ProgramArgs() {
@@ -29,7 +28,10 @@ ProgramArgs::ProgramArgs(char **argv, int size) : ProgramArgs() {
         }
         else if (args[i] == "-moves") {
             i++;
-            if (args[i] == "a" || args[i] == "A") {
+            if (args[i] == "f" || args[i] == "F") {
+                _movesSource = MovesSource::FILE;
+            }
+            else if (args[i] == "a" || args[i] == "A") {
                 _movesSource = MovesSource::ALGORITHM;
             }
         }
@@ -38,6 +40,9 @@ ProgramArgs::ProgramArgs(char **argv, int size) : ProgramArgs() {
         }
         else if (args[i] == "-quiet") {
             _quiet = true;
+        }
+        else if (args[i] == "-save") {
+            _save = true;
         }
         else if (args[i] == "-delay") {
             _delay = (unsigned int)atoi(args[++i].c_str());

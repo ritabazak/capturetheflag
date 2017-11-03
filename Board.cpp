@@ -2,6 +2,8 @@
 
 Board::Board(ProgramArgs::BoardSource source) {
     if (source == ProgramArgs::BoardSource::RANDOM) {
+        randomSeed();
+
         getCell(getRandomEmptyPoint()) = Type::FLGA;
         getCell(getRandomEmptyPoint()) = Type::FLGB;
 
@@ -16,7 +18,7 @@ Point Board::getRandomEmptyPoint() const {
     Point p;
 
     do {
-        p = Point::randomPoint(0, BOARD_SIZE);
+        p = Point::randomPoint(0, BOARD_SIZE - 1);
     } while (getCell(p) != Type::EMP);
 
     return p;

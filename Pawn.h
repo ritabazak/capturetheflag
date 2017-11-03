@@ -26,7 +26,7 @@ public:
     char getKey() const { return _key; }
     void draw(int backColor) const;
     bool isAlive() const { return _alive; }
-    void move(const Point &pt) { _pos = pt; }
+    void move(Direction dir) { _pos = _pos.getNext(dir); }
     Player::Side whichPlayer() const { return (_key <= '3')? Player::Side::A : Player::Side::B; }
     bool canMove(Board::Type cellType) const {
         return cellType == Board::Type::EMP
