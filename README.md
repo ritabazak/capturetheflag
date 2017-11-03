@@ -1,1 +1,1 @@
-Made by Margarita Bazak (318110376) and Amit Dahan (304824170)
+Made by Rita Bazak and Amit Dahan
